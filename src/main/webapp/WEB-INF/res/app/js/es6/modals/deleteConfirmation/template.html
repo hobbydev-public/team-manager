@@ -1,0 +1,12 @@
+<header class="modal-header">
+    <button type="button" class="close" ng-click="$ctrl.dismiss()">&times;</button>
+    <h4 class="modal-title">Confirm Deletion</h4>
+</header>
+<div class="modal-body">
+    <p>{{$ctrl.resolve.message}}</p>
+    <p><strong>{{$ctrl.resolve.resource.name}}</strong></p>
+</div>
+<footer class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="$ctrl.dismiss()">Cancel</button>
+    <button type="button" class="btn btn-danger" ng-click="$ctrl.delete()">Delete</button>
+</footer>

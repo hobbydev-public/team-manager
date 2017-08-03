@@ -1,0 +1,62 @@
+<a href="#!/" class="logo">Team Manager</a>
+
+<nav class="navbar navbar-static-top">
+    <a href="" class="sidebar-toggle" data-toggle="offcanvas">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </a>
+
+    <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+
+            <li>
+                <a href="" ng-click="$ctrl.openModal()"><i class="fa fa-circle-o"></i> Open Modal</a>
+            </li>
+
+            <li class="dropdown user user-menu">
+                <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="res/app/media/defaults/user-image.png" class="user-image" alt="{{$ctrl.currentUser.fullName}}">
+                    <span class="hidden-xs">{{$ctrl.currentUser.fullName}}</span>
+                </a>
+
+                <ul class="dropdown-menu">
+                    <!-- User image -->
+                    <li class="user-header">
+                        <img src="res/app/media/defaults/user-image.png" class="img-circle" alt="{{$ctrl.currentUser.fullName}}">
+                        <p>
+                            {{$ctrl.currentUser.fullName}} - {{$ctrl.currentUser.position.name}}
+                            <small>Joined on {{$ctrl.currentUser.startWorkDate | date: 'dd MMM yyyy'}}</small>
+                        </p>
+                    </li>
+                    <!-- Menu Body -->
+                    <li class="user-body">
+                        <div class="col-xs-4 text-center">
+                            <a href="#!/">Link 1</a>
+                        </div>
+                        <div class="col-xs-4 text-center">
+                            <a href="#!/">Link 2</a>
+                        </div>
+                        <div class="col-xs-4 text-center">
+                            <a href="#!/">Link 3</a>
+                        </div>
+                    </li>
+                    <!-- Menu Footer-->
+                    <li class="user-footer">
+                        <div class="pull-left">
+                            <a href="#!/profile" class="btn btn-default btn-flat">Profile</a>
+                        </div>
+                        <div class="pull-right">
+                            <a href="logout#" class="btn btn-default btn-flat">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="" data-toggle="control-sidebar"><i class="fa fa-ellipsis-v"></i></a>
+            </li>
+        </ul>
+    </div>
+</nav>

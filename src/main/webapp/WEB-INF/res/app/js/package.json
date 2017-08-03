@@ -1,0 +1,48 @@
+{
+  "name": "team-manager-webapp",
+  "version": "0.0.1",
+  "description": "Team Manager",
+  "main": "index.js",
+  "dependencies": {
+    "admin-lte": "^2.3.11",
+    "angular": "^1.6.2",
+    "angular-password": "^1.0.3",
+    "angular-resource": "^1.6.2",
+    "angular-route": "^1.6.2",
+    "babel-cli": "^6.23.0",
+    "babel-loader": "^6.4.0",
+    "babel-preset-es2015": "^6.22.0",
+    "bootstrap": "^3.3.7",
+    "css-loader": "^0.27.2",
+    "file-loader": "^0.10.1",
+    "font-awesome": "^4.7.0",
+    "jquery": "2.2.4",
+    "jquery-typeahead": "^2.7.6",
+    "local-date": "^2.0.1",
+    "postcss-loader": "^1.3.3",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.13.2",
+    "webpack": "^2.2.1"
+  },
+  "//": {
+    "angular-animate": "^1.6.2",
+    "angular-messages": "^1.6.2",
+    "angular-sanitize": "^1.6.5",
+    "angular-ui-bootstrap": "^2.5.0",
+    "angular-ui-calendar": "^1.0.2",
+    "angular-ui-grid": "^4.0.2",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.1",
+    "ng-csv": "^0.3.6"
+  },
+  "devDependencies": {},
+  "author": "Dmytro Romenskyi",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "transpile": "babel bundles --presets babel-preset-es2015 --out-dir dist",
+    "webpack": "webpack --config webpack.config.js"
+  }
+}

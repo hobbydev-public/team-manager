@@ -1,0 +1,21 @@
+.grid {
+    width: auto;
+    height: auto;
+    border: none;
+}
+
+.grid-actions {
+    padding: 5px;
+}
+
+.grid-actions .fa {
+    margin-left: 5px;
+}
+
+.ui-grid {
+    height: auto !important;
+}
+
+.ui-grid-viewport {
+    height: 100% !important;
+}

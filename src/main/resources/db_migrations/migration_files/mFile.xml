@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+		xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+	
+	<changeSet id="mFile" author="romenskyi" dbms="postgresql">
+		<!--
+			Creating sequences
+		-->
+		<createSequence sequenceName="xxx_id_seq" startValue="1" />
+		
+		<!--
+			Creating tables
+		-->
+		<createTable tableName="xxx" >
+			<column name="id" type="integer" defaultValueSequenceNext="xxx_id_seq">
+				<constraints primaryKey="true" nullable="false" unique="true" />
+			</column>
+		</createTable>
+
+		<!--
+			Foreign keys
+		-->
+		<addForeignKeyConstraint baseTableName="xxx"
+								 baseColumnNames="xxx_id"
+								 constraintName="xxx_xxx_id___yyy_id"
+								 referencedTableName="yyy"
+								 referencedColumnNames="id"
+								 onUpdate="CASCADE"
+								 onDelete="SET NULL" />
+
+		<!--
+			Rollback
+		-->
+		<rollback>
+			<dropTable tableName="xxx" cascadeConstraints="true" />
+			<dropSequence sequenceName="xxx_id_seq" />
+		</rollback>
+	</changeSet>
+</databaseChangeLog>

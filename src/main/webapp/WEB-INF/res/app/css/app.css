@@ -1,0 +1,23 @@
+.fa-thumbs-down, .fa-thumbs-o-down {
+    color: #dd4b39;
+}
+
+.fa-thumbs-up, .fa-thumbs-o-up {
+    color: #00a65a;
+}
+
+.box-tools-typeahead {
+    width: 50%;
+}
+
+.retain-line-breaks {
+    white-space: pre-line;
+}
+
+.direct-chat-messages {
+    height: 750px !important;
+}
+
+.export-buttons {
+    margin-bottom: 10px;
+}

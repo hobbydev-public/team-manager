@@ -2,7 +2,7 @@ package hobbydev.teammanager.business.services.impl;
 
 import hobbydev.teammanager.business.exception.ResourceForbiddenOperationException;
 import hobbydev.teammanager.business.exception.ResourceNotFoundException;
-import hobbydev.teammanager.business.services.UserServiceInterface;
+import hobbydev.teammanager.business.services.UserService;
 import org.jasypt.springsecurity3.authentication.encoding.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,7 +19,7 @@ import java.util.List;
  * User Service
  */
 @Service
-public class UserService extends AbstractService implements UserServiceInterface {
+public class UserServiceImpl extends AbstractService implements UserService {
     
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -46,11 +46,13 @@ public class UserService extends AbstractService implements UserServiceInterface
     }
     
     @Override
+    @Transactional
     public List<User> listUsers() {
         return getDAO().getAll(getEntityClass());
     }
     
     @Override
+    @Transactional
     public User getUser(Long id) throws ResourceNotFoundException {
         return listUsers().stream()
                 .filter(user -> user.getId().equals(id))

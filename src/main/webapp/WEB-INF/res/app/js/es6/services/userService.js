@@ -9,21 +9,28 @@ export default class UserService {
     }
 
     /**
-     * Retrieves information about currently logged in user.
+     * <p>Retrieves user by its ID.</p>
      *
-     * @param callback function to be executed when data is ready.
-     * Current user data will be passed as a first parameter of callback function.
+     * @param userId - id of a user
+     * @param success - success callback.
+     * Success callback is called with the following arguments
+     * <ul>
+     *     <li>(value (Object|Array)</li>
+     *     <li>responseHeaders (Function)</li>
+     *     <li>status (number)</li>
+     *     <li>statusText (string))</li>
+     * </ul>
+     * where the value is the populated resource instance or collection object.
+     * @param fail - fail callback. Callback is called with (httpResponse) argument.
      */
-    getUserById(userId) {
+    getUserById(userId, success, fail) {
         let _service = this;
         let user = {};
 
         _service.res.get(
             {userId:userId},
-            function (userResponseObject) {
-                console.log(userResponseObject);
-            }
+            success,
+            fail
         );
-
     }
 }

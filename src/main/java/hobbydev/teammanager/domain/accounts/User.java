@@ -28,9 +28,9 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 	private String email;
 	@Column(name="password")
 	private String password;
-	/*@Column(name = "restore_key")
+	@Column(name = "restore_key")
 	private String restoreKey = null;
-	@Column(name = "first_name")
+	/*@Column(name = "first_name")
 	private String firstName;
 	@Column(name = "last_name")
 	private String lastName;
@@ -82,6 +82,14 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getRestoreKey() {
+		return restoreKey;
+	}
+	
+	public void setRestoreKey(String restoreKey) {
+		this.restoreKey = restoreKey;
 	}
 	
 	/*public String getFirstName() {

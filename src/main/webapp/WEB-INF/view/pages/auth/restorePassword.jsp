@@ -38,6 +38,15 @@
 
 				<p class="login-box-msg">Restore password</p>
 
+				<div>
+					<c:if test="${param.success != null}">
+						<div class="alert alert-success">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							<p>${success}</p>
+						</div>
+					</c:if>
+				</div>
+
 				<form action="restore" method="post">
 					<div class="form-group has-feedback">
 						<label for="email">Email</label>

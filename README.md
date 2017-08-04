@@ -4,4 +4,10 @@
  - [x] Register
  - [x] Login
  - [x] Logout
- - [ ] Restore password
+ - [x] Restore password
+
+## Mailing
+ - [ ] Mail DAO
+ - [ ] Mail service
+ - [ ] Mail settings page
+ - [ ] Send password restore instructions

@@ -6,6 +6,7 @@ import hobbydev.teammanager.business.services.UserServiceInterface;
 import org.jasypt.springsecurity3.authentication.encoding.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -98,5 +99,47 @@ public class UserService extends AbstractService implements UserServiceInterface
         persistant.setEmail(user.getEmail());
         /*persistant.setFirstName(user.getFirstName());
         persistant.setLastName(user.getLastName());*/
+    }
+    
+    @Override
+    @Transactional
+    public String startPasswordRestore(String username) throws ResourceNotFoundException {
+        User persistant = null;
+        try {
+            persistant = loadUserByUsername(username);
+        } catch (UsernameNotFoundException unfe) {
+            throw new ResourceNotFoundException("User [" + username + "] was not found.", unfe);
+        }
+    
+        // generate random password
+        // generate restore key
+    
+        String key = KeyGenerators.string().generateKey();
+        String randomPassword = KeyGenerators.string().generateKey();
+        
+        persistant.setPassword(passwordEncoder.encodePassword(randomPassword, null));
+        persistant.setRestoreKey(passwordEncoder.encodePassword(key, null));
+        
+        //mailService.sendPasswordRestoreInstructions(user, key);
+        
+        return key;
+    }
+    
+    @Override
+    @Transactional
+    public boolean completePasswordRestore(String restoreKey, String newRawPassword) throws ResourceNotFoundException {
+        // check that restore key is valid
+        // set new pass
+        // reset restore key
+        
+        User persistant = listUsers().stream()
+                .filter(user -> passwordEncoder.isPasswordValid(user.getRestoreKey(), restoreKey, null))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("Security key is not valid"));
+        
+        persistant.setPassword(passwordEncoder.encodePassword(newRawPassword, null));
+        persistant.setRestoreKey(null);
+        
+        return true;
     }
 }

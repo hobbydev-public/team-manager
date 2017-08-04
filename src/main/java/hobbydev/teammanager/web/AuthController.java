@@ -1,6 +1,7 @@
 package hobbydev.teammanager.web;
 		
 import hobbydev.teammanager.business.exception.ResourceForbiddenOperationException;
+import hobbydev.teammanager.business.exception.ResourceNotFoundException;
 import hobbydev.teammanager.business.services.UserServiceInterface;
 import hobbydev.teammanager.domain.accounts.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,14 +96,14 @@ public class AuthController {
 			return mv;
 		}
 		
-		// generate random password
-		// generate restore key
-			
-		mv.setViewName("redirect:/restore?success=");
-		ra.addFlashAttribute("success", "Instructions for password restore are sent to your email.");
-		
-		//mv.setViewName("redirect:/restore?error=");
-		//ra.addFlashAttribute("error", rnfe.getMessage());
+		try {
+			String temp = userService.startPasswordRestore(email);
+			mv.setViewName("redirect:/restore?success=");
+			ra.addFlashAttribute("success", "Instructions for password restore are sent to your email. [" + temp + "]");
+		} catch (ResourceNotFoundException rnfe) {
+			mv.setViewName("redirect:/restore?error=");
+			ra.addFlashAttribute("error", rnfe.getMessage());
+		}
 		
 		return mv;
 	}
@@ -134,15 +135,13 @@ public class AuthController {
 			return mv;
 		}
 		
-		
-		// check that restore key is valid
-		// set new pass
-		// reset restore key
-		
-		mv.setViewName("redirect:/login");
-	
-		//mv.setViewName("redirect:/restore?error=");
-		//ra.addFlashAttribute("error", rnfe.getMessage());
+		try {
+			userService.completePasswordRestore(key, password);
+			mv.setViewName("redirect:/login");
+		} catch (ResourceNotFoundException rnfe) {
+			mv.setViewName("redirect:/restore?error=");
+			ra.addFlashAttribute("error", rnfe.getMessage());
+		}
 		
 		return mv;
 	}

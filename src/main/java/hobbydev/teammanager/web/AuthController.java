@@ -2,7 +2,7 @@ package hobbydev.teammanager.web;
 		
 import hobbydev.teammanager.business.exception.ResourceForbiddenOperationException;
 import hobbydev.teammanager.business.exception.ResourceNotFoundException;
-import hobbydev.teammanager.business.services.UserServiceInterface;
+import hobbydev.teammanager.business.services.UserService;
 import hobbydev.teammanager.domain.accounts.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AuthController {
 	
 	@Autowired
-	private UserServiceInterface userService;
+	private UserService userService;
 	
 	@RequestMapping(path="/login", method = RequestMethod.GET)
 	public ModelAndView getLoginPage(ModelAndView mv, Authentication auth) {

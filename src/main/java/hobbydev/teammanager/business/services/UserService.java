@@ -9,7 +9,7 @@ import hobbydev.teammanager.domain.accounts.User;
         
 import java.util.List;
 
-public interface UserServiceInterface extends UserDetailsService {
+public interface UserService extends UserDetailsService {
     
     @Override
     User loadUserByUsername(String username) throws UsernameNotFoundException;

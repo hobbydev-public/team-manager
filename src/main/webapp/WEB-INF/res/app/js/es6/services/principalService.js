@@ -19,8 +19,8 @@ export default class PrincipalService {
         if(_service.principal == null) {
             _service.res.get(
                 {},
-                function (principalResponseObject) {
-                    _service.principal = principalResponseObject.data;
+                function (principal) {
+                    _service.principal = principal;
                     callback(_service.principal);
                 }
             );

@@ -1,22 +1,26 @@
 package hobbydev.teammanager.domain.accounts;
 
 import hobbydev.teammanager.domain.core.IdentifiedEntityInterface;
-import hobbydev.teammanager.domain.core.UserGroup;
-import hobbydev.teammanager.domain.projects.Client;
-import hobbydev.teammanager.domain.projects.Project;
 
 import javax.persistence.*;
-import java.util.List;
 
-public class Company extends Account implements UserGroup {
+@Entity
+@Table(name="companies")
+public class Company /*extends Account*/ implements IdentifiedEntityInterface /*UserGroup*/ {
 	
+	@Id
+	@Column(name="id")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
+	@Column(name="name")
 	private String name;
+	@OneToOne
+	@JoinColumn(name = "owner_id")
 	private User owner;
 	
-	private List<User> employees;
+	/*private List<User> employees;
 	private List<Project> projects;
-	private List<Client> clients;
+	private List<Client> clients;*/
 	
 	@Override
 	public Long getId() {
@@ -28,7 +32,7 @@ public class Company extends Account implements UserGroup {
 		this.id = id;
 	}
 	
-	@Override
+	//@Override
 	public String getName() {
 		return name;
 	}
@@ -45,7 +49,7 @@ public class Company extends Account implements UserGroup {
 		this.owner = owner;
 	}
 	
-	@Override
+	/*@Override
 	public List<Project> getProjects() {
 		return projects;
 	}
@@ -89,7 +93,7 @@ public class Company extends Account implements UserGroup {
 	@Transient
 	public List<? extends IdentifiedEntityInterface> getElements() {
 		return getGroupMembers();
-	}
+	}*/
 	
 	@Override
 	public boolean equals(Object o) {

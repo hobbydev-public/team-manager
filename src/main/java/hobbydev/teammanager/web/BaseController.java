@@ -4,8 +4,11 @@
  */
 package hobbydev.teammanager.web;
 		
+import hobbydev.teammanager.business.exception.ResourceNotFoundException;
+import hobbydev.teammanager.business.services.UserService;
 import hobbydev.teammanager.config.CurrentUser;
 import hobbydev.teammanager.domain.accounts.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,13 +19,19 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(method=RequestMethod.GET)
 public class BaseController {
 	
+	@Autowired
+	private UserService userService;
+	
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(path="/*", method = RequestMethod.GET)
-	public ModelAndView getGenericPage(ModelAndView mv, @CurrentUser User currentUser) {
+	public ModelAndView getGenericPage(ModelAndView mv, @CurrentUser User currentUser) throws ResourceNotFoundException {
 		mv.setViewName("pages/generic");
 		
-		if(currentUser.getCompany() != null) {
-			mv.addObject("company", currentUser.getCompany().getName());
+		User principal = userService.getUser(currentUser.getId());
+		boolean companyCreated = principal.getCompany() != null;
+		
+		if(companyCreated) {
+			mv.addObject("company", principal.getCompany().getName());
 		}
 		return mv;
 	}

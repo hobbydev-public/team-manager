@@ -11,9 +11,8 @@ export default class CompanyService {
     addCompanyAccount(name, success, fail) {
         let _service = this;
 
-        let newCompany = new _service.res();
-        newCompany.name = name;
-        newCompany.$save(
+        _service.res.save(
+            {name:name},
             {},
             success,
             fail

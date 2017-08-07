@@ -25,9 +25,8 @@ export default class UserService {
      */
     getUserById(userId, success, fail) {
         let _service = this;
-        let user = {};
 
-        _service.res.get(
+        return _service.res.get(
             {userId:userId},
             success,
             fail

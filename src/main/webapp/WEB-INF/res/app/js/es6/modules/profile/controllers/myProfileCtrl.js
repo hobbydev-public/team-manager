@@ -20,6 +20,15 @@ export default class MyProfileCtrl {
     _initData() {
         let _ctrl = this;
 
-        _ctrl.user = _ctrl.userService.getUserById(_ctrl.userId);
+        _ctrl.user = _ctrl.userService.getUserById(
+            _ctrl.userId,
+            function (user) {
+                
+            },
+            function (httpResp) {
+                console.error(httpResp.data.message);
+                console.error(httpResp.data.stackTrace);
+            }
+        );
     }
 }

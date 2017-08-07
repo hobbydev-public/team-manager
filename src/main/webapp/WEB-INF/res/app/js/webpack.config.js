@@ -10,8 +10,8 @@ module.exports = {
 			'angular-route',
 			//'angular-ui-grid',
 			'angular-resource',
-			//'angular-animate',
-			//'angular-ui-bootstrap',
+			'angular-animate',
+			'angular-ui-bootstrap',
 			'angular-password',
 			'bootstrap',
 			//'local-date'

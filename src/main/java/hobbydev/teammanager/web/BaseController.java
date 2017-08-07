@@ -4,6 +4,8 @@
  */
 package hobbydev.teammanager.web;
 		
+import hobbydev.teammanager.config.CurrentUser;
+import hobbydev.teammanager.domain.accounts.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +18,12 @@ public class BaseController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(path="/*", method = RequestMethod.GET)
-	public ModelAndView getGenericPage(ModelAndView mv) {
+	public ModelAndView getGenericPage(ModelAndView mv, @CurrentUser User currentUser) {
 		mv.setViewName("pages/generic");
+		
+		if(currentUser.getCompany() != null) {
+			mv.addObject("company", currentUser.getCompany().getName());
+		}
 		return mv;
 	}
 	

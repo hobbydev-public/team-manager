@@ -3,6 +3,7 @@ package hobbydev.teammanager.business.services.impl;
 import hobbydev.teammanager.business.exception.ResourceForbiddenOperationException;
 import hobbydev.teammanager.business.exception.ResourceNotFoundException;
 import hobbydev.teammanager.business.services.UserService;
+import hobbydev.teammanager.domain.accounts.Company;
 import org.jasypt.springsecurity3.authentication.encoding.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -143,5 +144,33 @@ public class UserServiceImpl extends AbstractService implements UserService {
         persistant.setRestoreKey(null);
         
         return true;
+    }
+    
+    @Override
+    @Transactional
+    public Company addCompanyAccount(String name, User owner) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+        if(owner == null) {
+            throw new IllegalArgumentException("Owner is null");
+        }
+    
+        if(owner.getId() == null || Long.valueOf(0).compareTo(owner.getId()) >= 0) {
+            throw new ResourceNotFoundException("Owner ID does not exist. Company account can only be created with valid owner ID.");
+        }
+        
+        if(name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Company name is not provided.");
+        }
+        
+        User persistant = getUser(owner.getId());
+        
+        if(persistant.getCompany() != null) {
+            throw new ResourceForbiddenOperationException("User can create only single company account.");
+        }
+        
+        Company company = new Company();
+        company.setName(name);
+        
+        persistant.setCompany(company);
+        return company;
     }
 }

@@ -1,18 +1,12 @@
 package hobbydev.teammanager.domain.accounts;
 
 import hobbydev.teammanager.domain.core.IdentifiedEntityInterface;
-import hobbydev.teammanager.domain.projects.Client;
-import hobbydev.teammanager.domain.projects.Position;
-import hobbydev.teammanager.domain.projects.Project;
-import hobbydev.teammanager.domain.projects.ProjectMember;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Table(name="users")
@@ -31,6 +25,9 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 	@Column(name = "restore_key")
 	private String restoreKey = null;
 	
+	@OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Company company;
+	
 	/*@Column(name = "first_name")
 	private String firstName;
 	@Column(name = "last_name")
@@ -42,9 +39,6 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 	@ManyToOne
 	@JoinColumn(name = "position_id")
 	private Position position;
-	@OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "company_id")
-	private Company company;
 	@OneToMany(mappedBy = "userOwner", orphanRemoval = true)
 	private List<Project> projects;
 	@OneToMany(mappedBy = "userOwner", orphanRemoval = true)
@@ -93,6 +87,25 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 		this.restoreKey = restoreKey;
 	}
 	
+	public Company getCompany() {
+		return company;
+	}
+	
+	public void setCompany(Company company) {
+		if(company == null) {
+			removeCompany();
+		}
+		company.setOwner(this);
+		this.company = company;
+	}
+	
+	public void removeCompany() {
+		if(this.company != null) {
+			this.company.setOwner(null);
+			this.company = null;
+		}
+	}
+	
 	/*public String getFirstName() {
 		return firstName;
 	}
@@ -115,14 +128,6 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 	
 	public void setPosition(Position position) {
 		this.position = position;
-	}
-	
-	public Company getCompany() {
-		return company;
-	}
-	
-	public void setCompany(Company company) {
-		this.company = company;
 	}
 	
 	@Override

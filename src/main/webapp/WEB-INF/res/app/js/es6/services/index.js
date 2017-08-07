@@ -5,6 +5,7 @@ import resource from 'angular-resource';
 /* Services */
 import principalService from './principalService';
 import userService from './userService';
+import companyService from './companyService';
 
 export default angular.module('app.services',
     [
@@ -12,4 +13,5 @@ export default angular.module('app.services',
     ])
     .service('principalService', principalService)
     .service('userService', userService)
+    .service('companyService', companyService)
     .name;

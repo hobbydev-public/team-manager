@@ -31,6 +31,15 @@
 					<ul class="sidebar-menu">
 						<li class="header">MAIN NAVIGATION</li>
 						<li><a href="#!/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+
+						<c:if test="${company != null}">
+							<li><a href="#!/company"><i class="fa fa-circle-o"></i> <span>${company}</span></a></li>
+						</c:if>
+						<c:if test="${company == null}">
+							<li><a href ng-click="openAddCompanyModal()"><i class="fa fa-plus"></i> <span>Add Company Account</span></a></li>
+						</c:if>
+
+
 						<sec:authorize access="isAuthenticated()">
 							<li class="header">ADMINISTRATION</li>
 							<li class="treeview">

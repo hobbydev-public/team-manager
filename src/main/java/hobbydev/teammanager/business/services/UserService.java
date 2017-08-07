@@ -2,6 +2,7 @@ package hobbydev.teammanager.business.services;
 
 import hobbydev.teammanager.business.exception.ResourceForbiddenOperationException;
 import hobbydev.teammanager.business.exception.ResourceNotFoundException;
+import hobbydev.teammanager.domain.accounts.Company;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -21,6 +22,8 @@ public interface UserService extends UserDetailsService {
     
     String/*boolean*/ startPasswordRestore(String username) throws ResourceNotFoundException;
     boolean completePasswordRestore(String restoreKey, String newRawPassword) throws ResourceNotFoundException;
+	
+	Company addCompanyAccount(String name, User owner) throws ResourceNotFoundException, ResourceForbiddenOperationException;
     
     /*
     

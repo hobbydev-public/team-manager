@@ -5,9 +5,9 @@
 import angular from 'angular';
 import route from 'angular-route';
 import resource from 'angular-resource';
-/*import uigrid from 'angular-ui-grid';
+/*import uigrid from 'angular-ui-grid';*/
 import uibootstrap from 'angular-ui-bootstrap';
-import animate from 'angular-animate';*/
+import animate from 'angular-animate';
 
 // app utility modules
 import components from './components';
@@ -23,11 +23,11 @@ import routesConfig from './app.module.routing';
 
 let rootModule = angular.module('app',
 	[
-		route, 'angular-password', resource, //uibootstrap, animate, uigrid, 'ui.calendar', 'ui-iconpicker', 'ngSanitize', 'ngCsv',
+		route, 'angular-password', resource, uibootstrap, animate, //uigrid, 'ui.calendar', 'ui-iconpicker', 'ngSanitize', 'ngCsv',
 		components, modals, services,
 		dashboard, profile
 	])
-	.controller('rootCtrl', function rootCtrl($scope, principalService) {
+	.controller('rootCtrl', function rootCtrl($scope, $uibModal, principalService) {
 
 		principalService.getCurrentUser(function (currentUser) {
 			$scope.$root.appContext = {
@@ -35,5 +35,21 @@ let rootModule = angular.module('app',
 				currentPageContext:{}
 			};
 		});
+		
+		$scope.openAddCompanyModal = function () {
+			let modal = $uibModal.open({
+				component: 'addCompanyModal',
+			});
+
+			modal.result.then(
+				function (success) {
+					// on close
+					if(success) window.location.reload();
+				},
+				function () {
+					// on dismiss
+				}
+			);
+		}
 	})
 	.config(routesConfig);

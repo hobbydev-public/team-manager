@@ -10,11 +10,9 @@ export default class TopNavBarController {
 
         //this.modalProvider = $uibModal;
         principalService.getCurrentUser(function (currentUser) {
-            _ctrl.principal = rootScope.appContext.currentUser;
+            _ctrl.principal = currentUser;
             _ctrl._initData();
         });
-        this._initData();
-
     }
 
     _initData() {

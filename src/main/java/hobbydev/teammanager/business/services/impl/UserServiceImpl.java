@@ -82,7 +82,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     
     @Override
     @Transactional
-    public void updateUser(User user) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+    public User updateUser(User user) throws ResourceNotFoundException, ResourceForbiddenOperationException {
         if(user == null) {
             throw new IllegalArgumentException("User is null");
         }
@@ -100,8 +100,10 @@ public class UserServiceImpl extends AbstractService implements UserService {
         
         User persistant = getUser(user.getId());
         persistant.setEmail(user.getEmail());
-        /*persistant.setFirstName(user.getFirstName());
-        persistant.setLastName(user.getLastName());*/
+        persistant.setFirstName(user.getFirstName());
+        persistant.setLastName(user.getLastName());
+        
+        return persistant;
     }
     
     @Override

@@ -7,6 +7,6 @@ export default function routing($routeProvider) {
         .when('/profile', {
             template: require('./templates/myProfile.html'),
             controller: myProfileCtrl,
-            controllerAs: '$ctrl'
+            controllerAs: '$ctrl',
         });
 }

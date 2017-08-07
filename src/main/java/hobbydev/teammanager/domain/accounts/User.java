@@ -25,13 +25,15 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 	@Column(name = "restore_key")
 	private String restoreKey = null;
 	
-	@OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Company company;
-	
-	/*@Column(name = "first_name")
+	@Column(name = "first_name")
 	private String firstName;
 	@Column(name = "last_name")
 	private String lastName;
+	
+	@OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Company company;
+	
+	/*
 	@Column(name = "start_work_date")
 	private LocalDate startWorkDate = LocalDate.now();
 	@Column(name = "birth_date")
@@ -85,6 +87,22 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 	
 	public void setRestoreKey(String restoreKey) {
 		this.restoreKey = restoreKey;
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 	
 	public Company getCompany() {

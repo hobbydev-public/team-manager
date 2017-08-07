@@ -7,7 +7,7 @@ export default class DashboardCtrl {
         let _ctrl = this;
 
         principalService.getCurrentUser(function (currentUser) {
-            _ctrl.principal = $scope.appContext.currentUser;
+            _ctrl.principal = currentUser;
             _ctrl._initData();
         });
     }

@@ -4,9 +4,6 @@ import hobbydev.teammanager.domain.accounts.User;
 
 public class AnonymousPrincipalModel extends PrincipalModel {
 	
-	private String email;
-	private boolean authenticated;
-	
 	public AnonymousPrincipalModel() {
 		this(null);
 	}
@@ -14,6 +11,8 @@ public class AnonymousPrincipalModel extends PrincipalModel {
 	private AnonymousPrincipalModel(User domain) {
 		setId(-1L);
 		setEmail("anonymous@user");
+		setFirstName("Anonymous");
+		setLastName("User");
 		setAuthenticated(false);
 	}
 	
@@ -35,6 +34,31 @@ public class AnonymousPrincipalModel extends PrincipalModel {
 	@Override
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	@Override
+	public String getFirstName() {
+		return super.getFirstName();
+	}
+	
+	@Override
+	public void setFirstName(String firstName) {
+		super.setFirstName(firstName);
+	}
+	
+	@Override
+	public String getLastName() {
+		return super.getLastName();
+	}
+	
+	@Override
+	public void setLastName(String lastName) {
+		super.setLastName(lastName);
+	}
+	
+	@Override
+	public String getFullName() {
+		return super.getFullName();
 	}
 	
 	@Override

@@ -4,7 +4,13 @@ export default class UserService {
 
         this.res = $resource(
             'api/web/users/:userId',
-            {userId: '@id'}
+            {userId: '@id'},
+            {
+                update: {
+                    method: 'PUT',
+                    params: {userId: '@id'}
+                }
+            }
         );
     }
 
@@ -28,6 +34,14 @@ export default class UserService {
 
         return _service.res.get(
             {userId:userId},
+            success,
+            fail
+        );
+    }
+
+    updateUser(userResource, success, fail) {
+        userResource.$update(
+            {},
             success,
             fail
         );

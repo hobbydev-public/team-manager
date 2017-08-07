@@ -1,6 +1,7 @@
 export default class MyProfileCtrl {
     constructor($scope,
-                principalService, userService) {
+                principalService,
+                userService) {
         'ngInject';
 
         $scope.ctrl = this; // after this assignment, controller instance is available in template either by 'ctrl' or by alias, defined in 'controllerAs'
@@ -12,7 +13,7 @@ export default class MyProfileCtrl {
         _ctrl.user = null;
 
         principalService.getCurrentUser(function (currentUser) {
-            _ctrl.userId = $scope.appContext.currentUser.id;
+            _ctrl.userId = currentUser.id;
             _ctrl._initData();
         });
     }

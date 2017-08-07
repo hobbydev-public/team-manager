@@ -3,6 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <c:set var="app" value="${pageContext.servletContext.contextPath}" />
+<c:set var="companyCreated" value="${company != null}" />
 
 <!DOCTYPE html>
 <html lang="en" ng-app="app">
@@ -32,10 +33,10 @@
 						<li class="header">MAIN NAVIGATION</li>
 						<li><a href="#!/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
 
-						<c:if test="${company != null}">
+						<c:if test="${companyCreated}">
 							<li><a href="#!/company"><i class="fa fa-circle-o"></i> <span>${company}</span></a></li>
 						</c:if>
-						<c:if test="${company == null}">
+						<c:if test="${!companyCreated}">
 							<li><a href ng-click="openAddCompanyModal()"><i class="fa fa-plus"></i> <span>Add Company Account</span></a></li>
 						</c:if>
 

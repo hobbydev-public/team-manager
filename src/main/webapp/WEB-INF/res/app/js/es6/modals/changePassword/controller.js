@@ -1,8 +1,9 @@
 export default class ChangePasswordController {
-    constructor(userService) {
+    constructor(userService, logService) {
         'ngInject';
 
         this.userService = userService;
+        this.log = logService;
         this.alerts = [];
     }
 
@@ -25,8 +26,15 @@ export default class ChangePasswordController {
                     title: 'Oh snap!',
                     message: httpResp.data.message
                 });
-                console.error(httpResp.data.message);
-                console.error(httpResp.data.stackTrace);
+
+                _ctrl.log.error(
+                    httpResp.config.method,
+                    httpResp.config.url,
+                    httpResp.status,
+                    httpResp.statusText,
+                    httpResp.data.message,
+                    httpResp.data.stackTrace
+                );
             }
         );
     }

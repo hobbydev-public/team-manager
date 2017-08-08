@@ -9,7 +9,7 @@ public abstract class AbstractModel {
 	protected AbstractModel(){}
 	
 	public AbstractModel(IdentifiedEntityInterface domain) {
-		this.id = domain.getId();
+		setId(domain.getId());
 	}
 	
 	public abstract Long getId();

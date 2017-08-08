@@ -1,6 +1,7 @@
 export default class EditUserDataFormController {
     constructor($scope,
-                userService) {
+                userService,
+                logService) {
         'ngInject';
 
         $scope.ctrl = this; // after this assignment, controller instance is available in template either by 'ctrl' or by alias, defined in 'controllerAs'
@@ -8,6 +9,7 @@ export default class EditUserDataFormController {
         let rootScope = $scope.$root;
 
         _ctrl.userService = userService;
+        _ctrl.log = logService;
 
         this._initData();
 
@@ -30,8 +32,15 @@ export default class EditUserDataFormController {
                     title: 'Oh snap!',
                     message: httpResp.data.message
                 });
-                console.error(httpResp.data.message);
-                console.error(httpResp.data.stackTrace);
+
+                _ctrl.log.error(
+                    httpResp.config.method,
+                    httpResp.config.url,
+                    httpResp.status,
+                    httpResp.statusText,
+                    httpResp.data.message,
+                    httpResp.data.stackTrace
+                );
             }
         );
     }

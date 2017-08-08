@@ -1,8 +1,9 @@
 export default class DeleteConfirmationModalController {
-    constructor() {
+    constructor(logService) {
         'ngInject';
 
         this.alerts = [];
+        this.log = logService;
     }
 
     dismiss() {
@@ -24,6 +25,15 @@ export default class DeleteConfirmationModalController {
                     title: 'Oh snap!',
                     message: httpResp.data.message
                 });
+
+                _ctrl.log.error(
+                    httpResp.config.method,
+                    httpResp.config.url,
+                    httpResp.status,
+                    httpResp.statusText,
+                    httpResp.data.message,
+                    httpResp.data.stackTrace
+                );
             }
         );
     }

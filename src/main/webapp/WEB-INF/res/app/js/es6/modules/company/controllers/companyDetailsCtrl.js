@@ -1,12 +1,14 @@
 export default class CompanyDetailsCtrl {
     constructor($scope,
-                companyService) {
+                companyService,
+                logService) {
         'ngInject';
 
         $scope.ctrl = this; // after this assignment, controller instance is available in template either by 'ctrl' or by alias, defined in 'controllerAs'
         let _ctrl = this;
 
         _ctrl.companyService = companyService;
+        _ctrl.log = logService;
 
         _ctrl._initData();
     }
@@ -27,12 +29,19 @@ export default class CompanyDetailsCtrl {
                 }
 
                 _ctrl.alerts.push({
-                    type: 'danger',
-                    title: 'Oh snap!',
+                    type: 'warning',
+                    title: 'Warning!',
                     message: httpResp.data.message
                 });
-                console.error(httpResp.data.message);
-                console.error(httpResp.data.stackTrace);
+
+                _ctrl.log.warn(
+                    httpResp.config.method,
+                    httpResp.config.url,
+                    httpResp.status,
+                    httpResp.statusText,
+                    httpResp.data.message,
+                    httpResp.data.stackTrace
+                );
             }
         );
     }

@@ -1,8 +1,10 @@
 export default class AddCompanyModalController {
-    constructor(companyService) {
+    constructor(companyService,
+                logService) {
         'ngInject';
 
         this.companyService = companyService;
+        this.log = logService;
         this.alerts = [];
     }
 
@@ -24,8 +26,15 @@ export default class AddCompanyModalController {
                     title: 'Oh snap!',
                     message: httpResp.data.message
                 });
-                console.error(httpResp.data.message);
-                console.error(httpResp.data.stackTrace);
+
+                _ctrl.log.error(
+                    httpResp.config.method,
+                    httpResp.config.url,
+                    httpResp.status,
+                    httpResp.statusText,
+                    httpResp.data.message,
+                    httpResp.data.stackTrace
+                );
             }
         );
     }

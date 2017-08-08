@@ -3,12 +3,16 @@ export default class UserService {
         'ngInject';
 
         this.res = $resource(
-            'api/web/users/:userId',
+            'api/web/users/:userId/:command',
             {userId: '@id'},
             {
                 update: {
                     method: 'PUT',
                     params: {userId: '@id'}
+                },
+                changePassword: {
+                    method: 'PUT',
+                    params:{command: 'password'}
                 }
             }
         );
@@ -42,6 +46,18 @@ export default class UserService {
     updateUser(userResource, success, fail) {
         userResource.$update(
             {},
+            success,
+            fail
+        );
+    }
+
+    changePassword(oldPassword, newPassword, success, fail){
+        let _service = this;
+        _service.res.changePassword(
+            {
+                oldPass:oldPassword,
+                newPass:newPassword
+            },
             success,
             fail
         );

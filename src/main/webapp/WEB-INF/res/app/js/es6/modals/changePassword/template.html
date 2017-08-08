@@ -1,0 +1,43 @@
+<header class="modal-header">
+    <button type="button" class="close" ng-click="$ctrl.dismiss()">&times;</button>
+    <h4 class="modal-title">Change Password</h4>
+</header>
+<div class="modal-body">
+
+    <div uib-alert
+         ng-repeat="alert in $ctrl.alerts" ng-class="'alert-' + (alert.type || 'info') + ' fade in'"
+         close="$ctrl.closeAlert($index)">
+        <strong>{{alert.title}}</strong>
+        <p>{{alert.message}}</p>
+    </div>
+
+    <form id="change-password-form" ng-submit="$ctrl.change()" name="changePasswordForm">
+        <div class="form-group">
+            <label for="oldPass">Old Password</label>
+            <input type="password" class="form-control"
+                   id="oldPass" name="oldPass" ng-model="$ctrl.oldPassword"
+                   placeholder="Old Passowrd" required="required"/>
+        </div>
+
+        <div class="form-group">
+            <label for="newPass">New Password</label>
+            <input type="password" class="form-control"
+                   id="newPass" name="newPass" ng-model="$ctrl.newPassword"
+                   placeholder="New Passowrd" required="required"/>
+        </div>
+
+        <div class="form-group has-feedback" ng-class="{'has-error':changePasswordForm.newPassRepeat.$error.passwordMatch}">
+            <label for="newPassRepeat">Repeat New Password</label>
+            <input type="password" class="form-control"
+                   id="newPassRepeat" name="newPassRepeat" ng-model="$ctrl.newPasswordRepeat"
+                   match-password="newPass"
+                   placeholder="Repeat New Passowrd" required="required"/>
+        </div>
+    </form>
+
+</div>
+<footer class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="$ctrl.dismiss()">Cancel</button>
+    <button form="change-password-form" type="submit" class="btn btn-primary"
+            ng-disabled="changePasswordForm.newPassRepeat.$error.passwordMatch">Change</button>
+</footer>

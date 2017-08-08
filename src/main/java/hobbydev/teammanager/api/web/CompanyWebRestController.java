@@ -29,6 +29,17 @@ public class CompanyWebRestController {
 		Company company = userService.addCompanyAccount(name, owner);
 		CompanyModel companyModel = new CompanyModel(company);
 		
+		return new ResponseEntity<CompanyModel>(companyModel, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(path = "account", method = RequestMethod.GET)
+	public ResponseEntity<CompanyModel> getCompanyAccount(@CurrentUser User owner) throws ResourceNotFoundException {
+		Company company = userService.getUser(owner.getId()).getCompany();
+		if(company == null) {
+			throw new ResourceNotFoundException("Current user does not have a company account created.");
+		}
+		
+		CompanyModel companyModel = new CompanyModel(company);
 		return new ResponseEntity<CompanyModel>(companyModel, HttpStatus.OK);
 	}
 }

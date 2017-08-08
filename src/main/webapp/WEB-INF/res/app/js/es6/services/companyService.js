@@ -4,7 +4,23 @@ export default class CompanyService {
 
         this.res = $resource(
             'api/web/companies/:userId',
-            {userId: '@owner.id'}
+            {userId: '@owner.id'},
+            {
+                companyAccount: {
+                    method: 'GET',
+                    params: {userId: 'account'},
+                    isArray: false
+                }
+            }
+        );
+    }
+
+    getCompanyAccount(success, fail) {
+        let _service = this;
+        return _service.res.companyAccount(
+            {},
+            success,
+            fail
         );
     }
 

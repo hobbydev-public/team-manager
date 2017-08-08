@@ -10,12 +10,32 @@
     </ol>
 </section>
 
-<section class="alerts alerts-pagewide">
+<section class="alerts alerts-pagewide" ng-if="$ctrl.alerts.length != 0">
     <div uib-alert
          ng-repeat="alert in $ctrl.alerts" ng-class="'alert-' + (alert.type || 'info') + ' fade in'"
          close="$ctrl.closeAlert($index)">
         <strong>{{alert.title}}</strong>
         <p>{{alert.message}}</p>
+    </div>
+</section>
+
+<section class="company-tools" ng-if="$ctrl.companyExists">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-default">Default Action</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+
+                <ul class="dropdown-menu">
+                    <li><a href>Default Action</a></li>
+                    <li><a href ng-click="$ctrl.openEditCompanyAccountModal()">Edit</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href ng-click="$ctrl.openDeleteCompanyAccountModal()">Delete Company Account</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 </section>
 

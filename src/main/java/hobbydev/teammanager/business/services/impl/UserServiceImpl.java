@@ -201,4 +201,46 @@ public class UserServiceImpl extends AbstractService implements UserService {
         persistant.setCompany(company);
         return company;
     }
+    
+    @Override
+    @Transactional
+    public boolean deleteCompanyAccount(User owner) throws ResourceNotFoundException {
+        if(owner == null) {
+            throw new IllegalArgumentException("Owner is null");
+        }
+    
+        if(owner.getId() == null || Long.valueOf(0).compareTo(owner.getId()) >= 0) {
+            throw new ResourceNotFoundException("Owner ID does not exist. Company account can only be deleted with valid owner ID.");
+        }
+    
+        User persistant = getUser(owner.getId());
+    
+        if(persistant.getCompany() == null) {
+            return false;
+        }
+        
+        persistant.removeCompany();
+        return true;
+    }
+    
+    @Override
+    @Transactional
+    public Company updateCompanyAccount(Company company, User user) throws ResourceNotFoundException {
+        if(company == null) {
+            throw new IllegalArgumentException("Company is null");
+        }
+    
+        if(user == null) {
+            throw new IllegalArgumentException("User is null");
+        }
+    
+        if(user.getId() == null || Long.valueOf(0).compareTo(user.getId()) >= 0) {
+            throw new ResourceNotFoundException("User ID does not exist. Only company for user with valid ID can be updated.");
+        }
+    
+        Company persistant = getUser(user.getId()).getCompany();
+        persistant.setName(company.getName());
+    
+        return persistant;
+    }
 }

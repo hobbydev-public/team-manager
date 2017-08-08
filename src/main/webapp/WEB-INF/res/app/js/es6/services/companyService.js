@@ -6,6 +6,10 @@ export default class CompanyService {
             'api/web/companies/:userId',
             {userId: '@owner.id'},
             {
+                update: {
+                    method: 'PUT',
+                    params: {userId: ''}
+                },
                 companyAccount: {
                     method: 'GET',
                     params: {userId: 'account'},
@@ -29,6 +33,14 @@ export default class CompanyService {
 
         _service.res.save(
             {name:name},
+            {},
+            success,
+            fail
+        );
+    }
+
+    editCompanyAccount(companyResource, success, fail) {
+        companyResource.$update(
             {},
             success,
             fail

@@ -28,7 +28,7 @@ let rootModule = angular.module('app',
 		components, modals, services,
 		dashboard, profile, company
 	])
-	.controller('rootCtrl', function rootCtrl($scope, $uibModal, principalService) {
+	.controller('rootCtrl', function rootCtrl($scope, $uibModal, $location, principalService) {
 
 		principalService.getCurrentUser(function (currentUser) {
 			$scope.$root.appContext = {
@@ -45,7 +45,10 @@ let rootModule = angular.module('app',
 			modal.result.then(
 				function (success) {
 					// on close
-					if(success) window.location.reload();
+					if(success) {
+						$location.path('/company');
+						window.location.reload();
+					}
 				},
 				function () {
 					// on dismiss

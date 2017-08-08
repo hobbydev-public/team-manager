@@ -1,0 +1,40 @@
+<div uib-alert
+     ng-repeat="alert in $ctrl.alerts" ng-class="'alert-' + (alert.type || 'info') + ' fade in'"
+     close="$ctrl.closeAlert($index)">
+    <strong>{{alert.title}}</strong>
+    <p>{{alert.message}}</p>
+</div>
+
+<form class="form-horizontal" ng-submit="$ctrl.updateUserData()">
+    <div class="form-group">
+        <label for="firstName" class="col-sm-2 control-label">First Name</label>
+
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="firstName" placeholder="First Name"
+                   ng-model="$ctrl.user.firstName">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="lastName" class="col-sm-2 control-label">Last Name</label>
+
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="lastName" placeholder="Last Name"
+                   ng-model="$ctrl.user.lastName">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">Email</label>
+
+        <div class="col-sm-10">
+            <input type="email" class="form-control" id="email" placeholder="Email" required="required"
+                   ng-model="$ctrl.user.email">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="button" class="btn btn-default" ng-click="$ctrl.resetChanges()">Cancel</button>
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </div>
+</form>

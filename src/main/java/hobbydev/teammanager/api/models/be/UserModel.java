@@ -6,6 +6,8 @@ import hobbydev.teammanager.domain.accounts.User;
 public class UserModel extends AbstractModel {
     
     private String email = "";
+    private String firstName;
+    private String lastName;
     private CompanyModel company;
     
     protected UserModel(){}
@@ -14,7 +16,9 @@ public class UserModel extends AbstractModel {
         super(domain);
         
         this.email = domain.getEmail();
-        this.company = new CompanyModel(domain.getCompany());
+        this.firstName = domain.getFirstName();
+        this.lastName = domain.getLastName();
+        this.company = domain.getCompany() == null? null:new CompanyModel(domain.getCompany());
     }
     
     @Override
@@ -35,6 +39,26 @@ public class UserModel extends AbstractModel {
         this.email = email;
     }
     
+    public String getFirstName() {
+        return firstName;
+    }
+    
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    
+    public String getLastName() {
+        return lastName;
+    }
+    
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
+    }
+    
     public CompanyModel getCompany() {
         return company;
     }
@@ -49,6 +73,8 @@ class ShallowUserModel extends UserModel {
     ShallowUserModel(User domain) {
         setId(domain.getId());
         setEmail(domain.getEmail());
+        setFirstName(domain.getFirstName());
+        setLastName(domain.getLastName());
     }
     
     @Override

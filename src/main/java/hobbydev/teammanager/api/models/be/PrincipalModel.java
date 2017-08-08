@@ -6,6 +6,8 @@ import hobbydev.teammanager.domain.accounts.User;
 public class PrincipalModel extends AbstractModel {
     
     protected String email;
+    protected String firstName;
+    protected String lastName;
     protected boolean authenticated;
     
     protected PrincipalModel(){}
@@ -14,6 +16,8 @@ public class PrincipalModel extends AbstractModel {
         super(domain);
         
         this.email = domain.getEmail();
+        this.firstName = domain.getFirstName();
+        this.lastName = domain.getLastName();
         this.authenticated = true;
     }
     
@@ -33,6 +37,26 @@ public class PrincipalModel extends AbstractModel {
     
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    public String getFirstName() {
+        return firstName;
+    }
+    
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+    
+    public String getLastName() {
+        return lastName;
+    }
+    
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
     }
     
     public boolean isAuthenticated() {

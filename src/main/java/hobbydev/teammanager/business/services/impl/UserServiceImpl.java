@@ -82,7 +82,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     
     @Override
     @Transactional
-    public void updateUser(User user) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+    public User updateUser(User user) throws ResourceNotFoundException, ResourceForbiddenOperationException {
         if(user == null) {
             throw new IllegalArgumentException("User is null");
         }
@@ -100,8 +100,36 @@ public class UserServiceImpl extends AbstractService implements UserService {
         
         User persistant = getUser(user.getId());
         persistant.setEmail(user.getEmail());
-        /*persistant.setFirstName(user.getFirstName());
-        persistant.setLastName(user.getLastName());*/
+        persistant.setFirstName(user.getFirstName());
+        persistant.setLastName(user.getLastName());
+        
+        return persistant;
+    }
+    
+    @Override
+    @Transactional
+    public User changePassword(Long userId, String oldRawPass, String newRawPass) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+        if(userId == null || Long.valueOf(0).compareTo(userId) >= 0) {
+            throw new ResourceNotFoundException("User ID does not exist. Password can only be changed for user with valid ID.");
+        }
+    
+        if(oldRawPass == null || oldRawPass.trim().isEmpty()) {
+            throw new IllegalArgumentException("Old password is not provided.");
+        }
+    
+        if(newRawPass == null || newRawPass.trim().isEmpty()) {
+            throw new IllegalArgumentException("New password is not provided.");
+        }
+        
+        User persistant = getUser(userId);
+        
+        boolean passValid = passwordEncoder.isPasswordValid(persistant.getPassword(), oldRawPass, null);
+        if(!passValid) {
+            throw new ResourceForbiddenOperationException("Invalid password provided.");
+        }
+        
+        persistant.setPassword(passwordEncoder.encodePassword(newRawPass, null));
+        return persistant;
     }
     
     @Override

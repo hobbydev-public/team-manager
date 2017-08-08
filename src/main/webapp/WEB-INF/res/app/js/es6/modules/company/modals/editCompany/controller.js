@@ -1,8 +1,9 @@
-export default class ChangePasswordController {
-    constructor(userService, logService) {
+export default class EditCompanyModalController {
+    constructor(companyService,
+                logService) {
         'ngInject';
 
-        this.userService = userService;
+        this.companyService = companyService;
         this.log = logService;
         this.alerts = [];
     }
@@ -11,11 +12,10 @@ export default class ChangePasswordController {
         this.modalInstance.dismiss();
     }
 
-    change() {
+    edit() {
         let _ctrl = this;
-        _ctrl.userService.changePassword(
-            _ctrl.oldPassword,
-            _ctrl.newPassword,
+        _ctrl.companyService.editCompanyAccount(
+            _ctrl.resolve.company,
             function () {
                 _ctrl.modalInstance.close(true);
             },

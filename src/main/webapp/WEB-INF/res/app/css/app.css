@@ -21,3 +21,15 @@
 .export-buttons {
     margin-bottom: 10px;
 }
+
+.alerts-pagewide {
+     margin-right: auto;
+     margin-left: auto;
+     padding: 15px 15px 0 15px;
+ }
+
+.company-tools {
+    margin-right: auto;
+    margin-left: auto;
+    padding: 15px 15px 0 15px;
+}

@@ -25,6 +25,8 @@ public interface UserService extends UserDetailsService {
     boolean completePasswordRestore(String restoreKey, String newRawPassword) throws ResourceNotFoundException;
 	
 	Company addCompanyAccount(String name, User owner) throws ResourceNotFoundException, ResourceForbiddenOperationException;
+	boolean deleteCompanyAccount(User owner) throws ResourceNotFoundException;
+	Company updateCompanyAccount(Company company, User auth) throws ResourceNotFoundException;
     
     /*
     

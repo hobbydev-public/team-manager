@@ -18,6 +18,7 @@
 		<link rel="stylesheet" href="res/app/js/node_modules/font-awesome/css/font-awesome.css">
 		<link rel="stylesheet" href="res/app/js/node_modules/admin-lte/dist/css/AdminLTE.css">
 		<link rel="stylesheet" href="res/app/js/node_modules/admin-lte/dist/css/skins/_all-skins.min.css">
+		<link rel="stylesheet" href="res/app/css/app.css">
 	</head>
 
 	<body class="skin-blue login-page">

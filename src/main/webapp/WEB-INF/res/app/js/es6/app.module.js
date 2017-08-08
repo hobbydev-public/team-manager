@@ -17,6 +17,7 @@ import services from './services';
 // app modules
 import dashboard from './modules/dashboard';
 import profile from './modules/profile';
+import company from './modules/company';
 
 // routing
 import routesConfig from './app.module.routing';
@@ -25,9 +26,9 @@ let rootModule = angular.module('app',
 	[
 		route, 'angular-password', resource, uibootstrap, animate, //uigrid, 'ui.calendar', 'ui-iconpicker', 'ngSanitize', 'ngCsv',
 		components, modals, services,
-		dashboard, profile
+		dashboard, profile, company
 	])
-	.controller('rootCtrl', function rootCtrl($scope, $uibModal, principalService) {
+	.controller('rootCtrl', function rootCtrl($scope, $uibModal, $location, principalService) {
 
 		principalService.getCurrentUser(function (currentUser) {
 			$scope.$root.appContext = {
@@ -44,7 +45,10 @@ let rootModule = angular.module('app',
 			modal.result.then(
 				function (success) {
 					// on close
-					if(success) window.location.reload();
+					if(success) {
+						$location.path('/company');
+						window.location.reload();
+					}
 				},
 				function () {
 					// on dismiss

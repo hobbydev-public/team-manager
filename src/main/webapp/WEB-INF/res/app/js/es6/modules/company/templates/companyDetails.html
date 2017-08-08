@@ -1,0 +1,46 @@
+<section class="content-header">
+    <h1>
+        Company Account
+        <small>{{$ctrl.company.name}}</small>
+    </h1>
+
+    <ol class="breadcrumb">
+        <li><a href="#!/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">{{$ctrl.company.name}}</li>
+    </ol>
+</section>
+
+<section class="alerts alerts-pagewide" ng-if="$ctrl.alerts.length != 0">
+    <div uib-alert
+         ng-repeat="alert in $ctrl.alerts" ng-class="'alert-' + (alert.type || 'info') + ' fade in'"
+         close="$ctrl.closeAlert($index)">
+        <strong>{{alert.title}}</strong>
+        <p>{{alert.message}}</p>
+    </div>
+</section>
+
+<section class="company-tools" ng-if="$ctrl.companyExists">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-default" ng-click="$ctrl.openEditCompanyAccountModal()">Edit</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+
+                <ul class="dropdown-menu">
+                    <li><a href>Manage</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href>Transfer Ownership</a></li>
+                    <li><a href ng-click="$ctrl.openDeleteCompanyAccountModal()">Delete Company Account</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="row">
+
+    </div>
+</section>

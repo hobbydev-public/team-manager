@@ -1,6 +1,7 @@
 package hobbydev.teammanager.api.web;
 
 import hobbydev.teammanager.api.models.be.UserModel;
+import hobbydev.teammanager.api.models.fe.PasswordsView;
 import hobbydev.teammanager.api.models.fe.UserView;
 import hobbydev.teammanager.business.exception.ResourceForbiddenOperationException;
 import hobbydev.teammanager.business.exception.ResourceNotFoundException;
@@ -41,5 +42,12 @@ public class UserWebRestController {
 		} else {
 			throw new ResourceForbiddenOperationException("User can update only his own data.");
 		}
+	}
+	
+	@RequestMapping(path = "password", method = RequestMethod.PUT)
+	public ResponseEntity<UserModel> changePassword(@RequestBody PasswordsView passwords, @CurrentUser User auth) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+		User user = userService.changePassword(auth.getId(), passwords.getOldPass(), passwords.getNewPass());
+		UserModel userModel = new UserModel(user);
+		return new ResponseEntity<UserModel>(userModel, HttpStatus.OK);
 	}
 }

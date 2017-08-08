@@ -20,6 +20,7 @@ public interface UserService extends UserDetailsService {
     Long addUser(User user) throws ResourceForbiddenOperationException;
     User updateUser(User user) throws ResourceNotFoundException, ResourceForbiddenOperationException;
     
+    User changePassword(Long userId, String oldRawPass, String newRawPass) throws ResourceNotFoundException, ResourceForbiddenOperationException;
     String/*boolean*/ startPasswordRestore(String username) throws ResourceNotFoundException;
     boolean completePasswordRestore(String restoreKey, String newRawPassword) throws ResourceNotFoundException;
 	

@@ -21,7 +21,7 @@ export default class OfficeService {
 
     getCompanyAccountOffices(success, fail) {
         let _service = this;
-        return _service.res.get(
+        return _service.res.query(
             {
                 companyId: 'account'
             },

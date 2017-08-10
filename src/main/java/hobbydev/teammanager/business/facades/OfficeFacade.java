@@ -9,4 +9,5 @@ import java.util.List;
 public interface OfficeFacade {
 	
 	List<Office> listOffices(Long companyId, Long userId) throws ResourceNotFoundException, ResourceForbiddenOperationException;
+	Office addOffice(Long companyId, String officeName, Long userId) throws ResourceNotFoundException, ResourceForbiddenOperationException;
 }

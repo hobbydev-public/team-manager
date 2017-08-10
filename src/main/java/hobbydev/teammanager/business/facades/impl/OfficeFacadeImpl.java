@@ -5,7 +5,7 @@ import hobbydev.teammanager.business.exception.ResourceNotFoundException;
 import hobbydev.teammanager.business.facades.OfficeFacade;
 import hobbydev.teammanager.business.services.CompanyService;
 import hobbydev.teammanager.business.services.UserService;
-import hobbydev.teammanager.business.validations.AccessValidations;
+import static hobbydev.teammanager.business.validations.AccessValidations.*;
 import hobbydev.teammanager.domain.accounts.Company;
 import hobbydev.teammanager.domain.accounts.User;
 import hobbydev.teammanager.domain.accounts.offices.Office;
@@ -30,12 +30,28 @@ public class OfficeFacadeImpl implements OfficeFacade {
 		Company company = companyService.getCompany(companyId);
 		User user = userService.getUser(userId);
 		
-		if(!AccessValidations.canUserViewCompanyOffices(user, company)) {
+		if(!canUserViewCompanyOffices(user, company)) {
 			throw new ResourceForbiddenOperationException("User with ID=[" + userId + "] cannot see a list of offices for company with ID=[" + companyId + "]");
 		}
 		
 		offices = company.getOffices();
 		
 		return offices;
+	}
+	
+	@Override
+	public Office addOffice(Long companyId, String officeName, Long userId) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+		Company company = companyService.getCompany(companyId);
+		User user = userService.getUser(userId);
+		
+		if(!canUserAddCompanyOffices(user, company)) {
+			throw new ResourceForbiddenOperationException("User with ID=[" + userId + "] cannot add offices for company with ID=[" + companyId + "]");
+		}
+		
+		Office office = new Office();
+		office.setName(officeName);
+		office.setCompany(company);
+		
+		return companyService.addOffice(office);
 	}
 }

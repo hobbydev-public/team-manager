@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +30,21 @@ public class OfficeWebRestController {
 	private OfficeFacade officeFacade;
 	
 	private static final String ACCOUNT_COMPANY_ID = "account";
+	
+	@RequestMapping(path = "", method = RequestMethod.POST)
+	public ResponseEntity<OfficeModel> addOffice(@PathVariable String companyId,
+	                                             @RequestParam String name,
+	                                             @CurrentUser User auth) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+		Office domainOffice = null;
+		
+		if(ACCOUNT_COMPANY_ID.equalsIgnoreCase(companyId)) {
+			domainOffice = addCompanyAccountOffice(name, auth);
+		} else {
+			domainOffice = addOfficeToCompany(Long.valueOf(companyId), name, auth);
+		}
+		
+		return new ResponseEntity<OfficeModel>(new OfficeModel(domainOffice), HttpStatus.CREATED);
+	}
 	
 	@RequestMapping(path = "", method = RequestMethod.GET)
 	public ResponseEntity<List<OfficeModel>> getCompanyOffices(@PathVariable String companyId, @CurrentUser User auth) throws ResourceNotFoundException, ResourceForbiddenOperationException {
@@ -69,5 +81,30 @@ public class OfficeWebRestController {
 		}
 		
 		return officeFacade.listOffices(companyId, auth.getId());
+	}
+	
+	private Office addCompanyAccountOffice(String officeName, User auth) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+		Company companyAccount = userService.getUser(auth.getId()).getCompany();
+		if(companyAccount == null){
+			throw new ResourceNotFoundException("Current user does not have a company account created.");
+		}
+		
+		return officeFacade.addOffice(companyAccount.getId(), officeName, auth.getId());
+	}
+	
+	private Office addOfficeToCompany(Long companyId, String officeName, User auth) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+		if(companyId == null || Long.valueOf(0L).compareTo(companyId) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be created for only a company with valid ID");
+		}
+		
+		if(auth == null || Long.valueOf(0L).compareTo(auth.getId()) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be created by an authenticated user only.");
+		}
+		
+		if(officeName == null || officeName.trim().isEmpty()) {
+			throw new ResourceForbiddenOperationException("Offices without names cannot be created.");
+		}
+		
+		return officeFacade.addOffice(companyId, officeName, auth.getId());
 	}
 }

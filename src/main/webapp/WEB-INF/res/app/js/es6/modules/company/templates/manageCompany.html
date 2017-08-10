@@ -23,9 +23,9 @@
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
-            <uib-tabset class="nav-tabs-custom" justified="true">
+            <uib-tabset class="nav-tabs-custom" justified="true" active="active">
                 <uib-tab index="0" heading="Offices">
-                    TBD
+                    <offices-list ng-if="active == 0"></offices-list>
                 </uib-tab>
                 <uib-tab index="1" heading="Employees">
                     TBD

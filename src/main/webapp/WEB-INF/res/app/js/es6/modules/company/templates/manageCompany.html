@@ -1,0 +1,44 @@
+<section class="content-header">
+    <h1>
+        Manage Company Account
+        <small>{{$ctrl.company.name}}</small>
+    </h1>
+
+    <ol class="breadcrumb">
+        <li><a href="#!/"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#!/company"><i class="fa fa-circle-o"></i> {{$ctrl.company.name}}</a></li>
+        <li class="active">Manage</li>
+    </ol>
+</section>
+
+<section class="alerts alerts-pagewide" ng-if="$ctrl.alerts.length != 0">
+    <div uib-alert
+         ng-repeat="alert in $ctrl.alerts" ng-class="'alert-' + (alert.type || 'info') + ' fade in'"
+         close="$ctrl.closeAlert($index)">
+        <strong>{{alert.title}}</strong>
+        <p>{{alert.message}}</p>
+    </div>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <uib-tabset class="nav-tabs-custom" justified="true">
+                <uib-tab index="0" heading="Offices">
+                    TBD
+                </uib-tab>
+                <uib-tab index="1" heading="Employees">
+                    TBD
+                </uib-tab>
+                <uib-tab index="2" heading="Employees Permissions">
+                    TBD
+                </uib-tab>
+                <uib-tab index="3" heading="Settings">
+                    <!--company-settings ng-if="active == 3"></company-settings-->
+                    <a href class="btn btn-danger" ng-click="$ctrl.openDeleteCompanyAccountModal()">Delete Company Account</a>
+                    <a href class="btn btn-warning" ng-click="$ctrl.openTransferCompanyAccountOwnershipModal()">Transfer Ownership</a>
+                </uib-tab>
+            </uib-tabset>
+        </div>
+    </div>
+</section>

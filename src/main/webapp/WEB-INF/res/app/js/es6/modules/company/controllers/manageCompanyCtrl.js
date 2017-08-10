@@ -1,6 +1,7 @@
-export default class CompanyDetailsCtrl {
+export default class ManageCompanyCtrl {
     constructor($scope,
                 $uibModal,
+                $location,
                 companyService,
                 logService) {
         'ngInject';
@@ -9,19 +10,23 @@ export default class CompanyDetailsCtrl {
         let _ctrl = this;
 
         _ctrl.modalProvider = $uibModal;
+        _ctrl.location = $location;
         _ctrl.companyService = companyService;
         _ctrl.log = logService;
 
         _ctrl._initData();
     }
 
-    openEditCompanyAccountModal() {
+    openDeleteCompanyAccountModal() {
         let _ctrl = this;
 
         let modal = _ctrl.modalProvider.open({
-            component: 'editCompanyModal',
+            component: 'deleteConfirmationModal',
             resolve: {
-                company: function () {
+                message: function () {
+                    return 'You are about to delete the following company account:';
+                },
+                resource: function () {
                     return _ctrl.companyService.getCompanyAccount(
                         function (company) {},
                         function (httpResp) {
@@ -51,6 +56,7 @@ export default class CompanyDetailsCtrl {
             function (success) {
                 // on close
                 if(success) {
+                    _ctrl.location.path('/');
                     window.location.reload();
                 }
             },

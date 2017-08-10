@@ -3,16 +3,16 @@ export default class CompanyService {
         'ngInject';
 
         this.res = $resource(
-            'api/web/companies/:userId',
-            {userId: '@owner.id'},
+            'api/web/companies/:id',
+            {id: '@id'},
             {
                 update: {
                     method: 'PUT',
-                    params: {userId: ''}
+                    params: {id: 'account'}
                 },
                 companyAccount: {
                     method: 'GET',
-                    params: {userId: 'account'},
+                    params: {id: 'account'},
                     isArray: false
                 }
             }

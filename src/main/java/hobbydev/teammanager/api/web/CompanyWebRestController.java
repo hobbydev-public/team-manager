@@ -23,7 +23,7 @@ public class CompanyWebRestController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(path = "", method = RequestMethod.PUT)
+	@RequestMapping(path = "account", method = RequestMethod.PUT)
 	public ResponseEntity<CompanyModel> updateCompanyAccount(@RequestBody CompanyView view,
 	                                                         @CurrentUser User auth) throws ResourceNotFoundException, ResourceForbiddenOperationException {
 		Company domain = userService.updateCompanyAccount(view.toDomain(), auth);
@@ -40,8 +40,13 @@ public class CompanyWebRestController {
 		return new ResponseEntity<CompanyModel>(companyModel, HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(path = "", method = RequestMethod.DELETE)
-	public ResponseEntity<SuccessModel> deleteCompanyAccount(@CurrentUser User owner) throws ResourceNotFoundException {
+	@RequestMapping(path = "{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<SuccessModel> deleteCompanyAccount(@PathVariable Long id, @CurrentUser User owner) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+		Company ownerCompany = userService.getUser(owner.getId()).getCompany();
+		if(ownerCompany == null || !ownerCompany.getId().equals(id)) {
+			throw new ResourceForbiddenOperationException("User can delete only owned company accounts.");
+		}
+		
 		boolean deleted = userService.deleteCompanyAccount(owner);
 		SuccessModel successModel = new SuccessModel();
 		successModel.setMessage(deleted? "Deleted": "No content");

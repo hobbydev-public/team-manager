@@ -73,9 +73,7 @@ export default class CompanyDetailsCtrl {
                 },
                 resource: function () {
                     return _ctrl.companyService.getCompanyAccount(
-                        function (company) {
-                            company.owner.id = '';
-                        },
+                        function (company) {},
                         function (httpResp) {
                             //fail
 

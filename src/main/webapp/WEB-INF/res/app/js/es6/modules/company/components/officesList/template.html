@@ -1,0 +1,35 @@
+<div uib-alert
+     ng-repeat="alert in $ctrl.alerts" ng-class="'alert-' + (alert.type || 'info') + ' fade in'"
+     close="$ctrl.closeAlert($index)">
+    <strong>{{alert.title}}</strong>
+    <p>{{alert.message}}</p>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 text-right">
+        <a class="btn btn-primary btn-sm" href="" ng-click="$ctrl.openAddOfficeModal()">Add</a>
+    </div>
+</div>
+
+<div class="row" ng-if="$ctrl.offices.length == 0">
+    <div class="col-xs-12">
+        <p class="no-table-data-message">
+            There are no offices yet. Create the first one.
+        </p>
+    </div>
+</div>
+
+<table class="table table-condensed" ng-if="$ctrl.offices.length > 0">
+    <thead>
+    <tr>
+        <th class="col-xs-10">Name</th>
+        <th class="col-xs-2">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="office in $ctrl.offices">
+        <td>{{office.name}}</td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>

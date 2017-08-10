@@ -33,3 +33,9 @@
     margin-left: auto;
     padding: 15px 15px 0 15px;
 }
+
+.no-table-data-message {
+    text-align: center;
+    font-size: 1.3em;
+    opacity: 0.5;
+}

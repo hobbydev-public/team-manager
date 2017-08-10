@@ -1,8 +1,11 @@
 package hobbydev.teammanager.domain.accounts;
 
+import hobbydev.teammanager.domain.accounts.offices.Office;
 import hobbydev.teammanager.domain.core.IdentifiedEntityInterface;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="companies")
@@ -17,6 +20,8 @@ public class Company /*extends Account*/ implements IdentifiedEntityInterface /*
 	@OneToOne
 	@JoinColumn(name = "owner_id")
 	private User owner;
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Office> offices = new ArrayList<>();
 	
 	/*private List<User> employees;
 	private List<Project> projects;
@@ -47,6 +52,24 @@ public class Company /*extends Account*/ implements IdentifiedEntityInterface /*
 	
 	public void setOwner(User owner) {
 		this.owner = owner;
+	}
+	
+	public List<Office> getOffices() {
+		return offices;
+	}
+	
+	public void setOffices(List<Office> offices) {
+		this.offices = offices;
+	}
+	
+	public void addOffice(Office office) {
+		offices.add(office);
+		office.setCompany(this);
+	}
+	
+	public void removeOffice(Office office) {
+		offices.remove(office);
+		office.setCompany(null);
 	}
 	
 	/*@Override

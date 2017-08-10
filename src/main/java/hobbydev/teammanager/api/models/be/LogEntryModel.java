@@ -10,7 +10,6 @@ import java.util.List;
 
 public class LogEntryModel extends AbstractModel {
 	
-	private Long id;
 	private String method;
 	private String url;
 	private Integer statusCode;

@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@PreAuthorize("isAuthenticated()")
 @RequestMapping(path="api/web/logs")
 public class LoggingWebRestController {
 	
@@ -35,6 +34,7 @@ public class LoggingWebRestController {
 		return new ResponseEntity<LogEntryModel>(logEntryModel, HttpStatus.CREATED);
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@RequestMapping(path = "", method = RequestMethod.GET)
 	public ResponseEntity<List<LogEntryModel>> getLogs() {
 		List<LogEntryModel> models = loggingService.getLogs().stream()

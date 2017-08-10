@@ -26,4 +26,20 @@ public class AccessValidations {
 		
 		return can;
 	}
+	
+	public static boolean canUserAddCompanyOffices(User user, Company company) {
+		boolean can = true;
+		
+		if(!canUserViewCompany(user, company)) {
+			can = false;
+			return can;
+		}
+		
+		if(!canUserViewCompanyOffices(user, company)) {
+			can = false;
+			return can;
+		}
+		
+		return can;
+	}
 }

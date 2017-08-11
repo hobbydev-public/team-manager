@@ -10,10 +10,7 @@ export default class OfficeService {
             },
             {
                 update: {
-                    method: 'PUT',
-                    params: {
-                        companyId: 'account'
-                    }
+                    method: 'PUT'
                 }
             }
         );
@@ -41,6 +38,19 @@ export default class OfficeService {
         );
     }
 
+    getOfficeById(officeId, companyId, success, fail) {
+        let _service = this;
+
+        return _service.res.get(
+            {
+                companyId: companyId,
+                officeId: officeId
+            },
+            success,
+            fail
+        );
+    }
+
     addOffice(name, success, fail) {
         let _service = this;
 
@@ -57,9 +67,7 @@ export default class OfficeService {
 
     editOffice(officeResource, success, fail) {
         officeResource.$update(
-            {
-                companyId: 'account'
-            },
+            {},
             success,
             fail
         );

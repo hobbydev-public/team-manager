@@ -51,4 +51,25 @@ public class CompanyServiceImpl extends AbstractService implements CompanyServic
 		
 		return office;
 	}
+	
+	@Override
+	@Transactional
+	public Office updateOffice(Office updatedOffice) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+		if(updatedOffice.getCompany() == null) {
+			throw new ResourceForbiddenOperationException("Office can be updated only in the context of some company");
+		}
+		
+		Long companyId = updatedOffice.getCompany().getId();
+		if(companyId == null) {
+			throw new ResourceForbiddenOperationException("Office can be only updated for already existing company");
+		}
+		
+		Office persistant = getCompany(updatedOffice.getCompany().getId()).getOffices().stream()
+				.filter(office -> office.getId().equals(updatedOffice.getId()))
+				.findFirst()
+				.orElseThrow(() -> new ResourceNotFoundException(updatedOffice.getId(), updatedOffice.getClass().getSimpleName()));
+		
+		persistant.setName(updatedOffice.getName());
+		return persistant;
+	}
 }

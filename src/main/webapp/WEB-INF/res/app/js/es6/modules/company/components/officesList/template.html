@@ -29,7 +29,10 @@
     <tbody>
     <tr ng-repeat="office in $ctrl.offices">
         <td>{{office.name}}</td>
-        <td></td>
+        <td>
+            <a href ng-click="$ctrl.openEditOfficeModal(office.id, office.company.id)"><i class="fa fa-pencil"></i></a>
+            <a href ng-click="$ctrl.openRemoveOfficeModal(office.id)"><i class="fa fa-remove"></i></a>
+        </td>
     </tr>
     </tbody>
 </table>

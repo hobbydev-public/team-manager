@@ -17,6 +17,51 @@ export default class OfficesListController {
 
     }
 
+    openEditOfficeModal(officeId, companyId) {
+        let _ctrl = this;
+
+        let modal = _ctrl.modalProvider.open({
+            component: 'editOfficeModal',
+            resolve: {
+                office: function () {
+                    return _ctrl.officeService.getOfficeById(
+                        officeId,
+                        companyId,
+                        function () {},
+                        function (httpResp) {
+                            _ctrl.alerts.push({
+                                type: 'danger',
+                                title: 'Oh snap!',
+                                message: httpResp.data.message
+                            });
+
+                            _ctrl.log.error(
+                                httpResp.config.method,
+                                httpResp.config.url,
+                                httpResp.status,
+                                httpResp.statusText,
+                                httpResp.data.message,
+                                httpResp.data.stackTrace
+                            );
+                        }
+                    );
+                }
+            }
+        });
+
+        modal.result.then(
+            function (success) {
+                // on close
+                if(success) {
+                    window.location.reload();
+                }
+            },
+            function () {
+                // on dismiss
+            }
+        );
+    }
+
     openAddOfficeModal() {
         let _ctrl = this;
 

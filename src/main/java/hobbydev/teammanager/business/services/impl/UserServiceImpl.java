@@ -4,6 +4,7 @@ import hobbydev.teammanager.business.exception.ResourceForbiddenOperationExcepti
 import hobbydev.teammanager.business.exception.ResourceNotFoundException;
 import hobbydev.teammanager.business.services.UserService;
 import hobbydev.teammanager.domain.accounts.Company;
+import hobbydev.teammanager.domain.projects.Project;
 import org.jasypt.springsecurity3.authentication.encoding.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -242,5 +243,72 @@ public class UserServiceImpl extends AbstractService implements UserService {
         persistant.setName(company.getName());
     
         return persistant;
+    }
+    
+    @Override
+    @Transactional
+    public Project addProject(Project project, Long userId) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+        if(userId == null || Long.valueOf(0L).compareTo(userId) >= 0) {
+            throw new ResourceForbiddenOperationException("Project can be created only by user with valid ID.");
+        }
+    
+        if(project == null) {
+            throw new IllegalArgumentException("Project is null");
+        }
+    
+        project.setId(null);
+        
+        User persistant = getUser(userId);
+        persistant.addProject(project);
+        
+        return project;
+    }
+    
+    @Override
+    @Transactional
+    public Project updateProject(Project project, Long userId) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+        if(userId == null || Long.valueOf(0L).compareTo(userId) >= 0) {
+            throw new ResourceForbiddenOperationException("Project can be updated only by user with valid ID.");
+        }
+    
+        if(project == null) {
+            throw new IllegalArgumentException("Project is null");
+        }
+    
+        Long projectId = project.getId();
+        if(projectId == null || Long.valueOf(0L).compareTo(projectId) >= 0) {
+            throw new ResourceForbiddenOperationException("Project can be updated only if it has a valid ID.");
+        }
+        
+        User user = getUser(userId);
+        
+        Project persistant = user.getProjects().stream()
+                .filter(p -> p.getId().equals(projectId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException(projectId, Project.class.getSimpleName()));
+        
+        persistant.setName(project.getName());
+        return persistant;
+    }
+    
+    @Override
+    public boolean deleteProject(Project project, Long userId) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+        if(userId == null || Long.valueOf(0L).compareTo(userId) >= 0) {
+            throw new ResourceForbiddenOperationException("Project can be deleted only by user with valid ID.");
+        }
+    
+        if(project == null) {
+            return false;
+        }
+    
+        Long projectId = project.getId();
+        if(projectId == null || Long.valueOf(0L).compareTo(projectId) >= 0) {
+            throw new ResourceForbiddenOperationException("Project can be deleted only if it has a valid ID.");
+        }
+        
+        User persistant = getUser(userId);
+        persistant.removeProject(project);
+        
+        return true;
     }
 }

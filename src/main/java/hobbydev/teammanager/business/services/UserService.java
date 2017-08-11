@@ -3,6 +3,7 @@ package hobbydev.teammanager.business.services;
 import hobbydev.teammanager.business.exception.ResourceForbiddenOperationException;
 import hobbydev.teammanager.business.exception.ResourceNotFoundException;
 import hobbydev.teammanager.domain.accounts.Company;
+import hobbydev.teammanager.domain.projects.Project;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -27,6 +28,10 @@ public interface UserService extends UserDetailsService {
 	Company addCompanyAccount(String name, User owner) throws ResourceNotFoundException, ResourceForbiddenOperationException;
 	boolean deleteCompanyAccount(User owner) throws ResourceNotFoundException;
 	Company updateCompanyAccount(Company company, User auth) throws ResourceNotFoundException;
+	
+	Project addProject(Project project, Long userId) throws ResourceForbiddenOperationException, ResourceNotFoundException;
+	Project updateProject(Project project, Long userId) throws ResourceForbiddenOperationException, ResourceNotFoundException;
+	boolean deleteProject(Project project, Long userId) throws ResourceForbiddenOperationException, ResourceNotFoundException;
     
     /*
     

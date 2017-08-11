@@ -1,6 +1,9 @@
 package hobbydev.teammanager.api.web;
 
 import hobbydev.teammanager.api.models.be.OfficeModel;
+import hobbydev.teammanager.api.models.be.generic.SuccessModel;
+import hobbydev.teammanager.api.models.fe.OfficeView;
+import hobbydev.teammanager.api.web.exception.HttpBadRequestException;
 import hobbydev.teammanager.business.exception.ResourceForbiddenOperationException;
 import hobbydev.teammanager.business.exception.ResourceNotFoundException;
 import hobbydev.teammanager.business.facades.OfficeFacade;
@@ -35,6 +38,10 @@ public class OfficeWebRestController {
 	public ResponseEntity<OfficeModel> addOffice(@PathVariable String companyId,
 	                                             @RequestParam String name,
 	                                             @CurrentUser User auth) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+		if(auth == null || Long.valueOf(0L).compareTo(auth.getId()) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be obtained by an authenticated user only.");
+		}
+		
 		Office domainOffice = null;
 		
 		if(ACCOUNT_COMPANY_ID.equalsIgnoreCase(companyId)) {
@@ -48,6 +55,10 @@ public class OfficeWebRestController {
 	
 	@RequestMapping(path = "", method = RequestMethod.GET)
 	public ResponseEntity<List<OfficeModel>> getCompanyOffices(@PathVariable String companyId, @CurrentUser User auth) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+		if(auth == null || Long.valueOf(0L).compareTo(auth.getId()) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be obtained by an authenticated user only.");
+		}
+		
 		List<Office> domainOffices = new ArrayList<>();
 		if(ACCOUNT_COMPANY_ID.equalsIgnoreCase(companyId)) {
 			domainOffices = getCompanyAccountOffices(auth);
@@ -62,7 +73,60 @@ public class OfficeWebRestController {
 		return new ResponseEntity<List<OfficeModel>>(officeModels, HttpStatus.OK);
 	}
 	
-	private List<Office> getCompanyAccountOffices(User auth) throws ResourceNotFoundException {
+	@RequestMapping(path = "{officeId}", method = RequestMethod.GET)
+	public ResponseEntity<OfficeModel> getOffice(@PathVariable  Long companyId,
+	                                             @PathVariable Long officeId,
+	                                             @CurrentUser User auth) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+		
+		if(auth == null || Long.valueOf(0L).compareTo(auth.getId()) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be obtained by an authenticated user only.");
+		}
+		
+		Office domainOffice = officeFacade.getOffice(companyId, officeId, auth.getId());
+		OfficeModel officeModel = new OfficeModel(domainOffice);
+		
+		return new ResponseEntity<OfficeModel>(officeModel, HttpStatus.OK);
+	}
+	
+	@RequestMapping(path = "{officeId}", method = RequestMethod.PUT)
+	public ResponseEntity<OfficeModel> updateOffice(@PathVariable Long companyId,
+	                                                @PathVariable Long officeId,
+	                                                @RequestBody OfficeView view,
+	                                                @CurrentUser User auth) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+		if(!officeId.equals(view.getId()) || !companyId.equals(view.getCompany().getId())) {
+			throw new HttpBadRequestException("Inconsistent data provided.");
+		}
+		
+		if(auth == null || Long.valueOf(0L).compareTo(auth.getId()) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be obtained by an authenticated user only.");
+		}
+		
+		Office updatedOffice = view.toDomain();
+		Office office = officeFacade.updateOffice(updatedOffice, auth.getId());
+		OfficeModel officeModel = new OfficeModel(office);
+		return new ResponseEntity<OfficeModel>(officeModel, HttpStatus.OK);
+	}
+	
+	@RequestMapping(path = "{officeId}", method = RequestMethod.DELETE)
+	public ResponseEntity<SuccessModel> deleteOffice(@PathVariable Long companyId,
+	                                                @PathVariable Long officeId,
+	                                                @CurrentUser User auth) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+		if(auth == null || Long.valueOf(0L).compareTo(auth.getId()) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be deleted by an authenticated user only.");
+		}
+		
+		boolean deleted = officeFacade.deleteOffice(officeId, companyId, auth.getId());
+		SuccessModel successModel = new SuccessModel();
+		successModel.setMessage(deleted? "Deleted": "No content");
+		
+		return new ResponseEntity<SuccessModel>(successModel, deleted? HttpStatus.OK : HttpStatus.NO_CONTENT);
+	}
+	
+	private List<Office> getCompanyAccountOffices(User auth) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+		if(auth == null || Long.valueOf(0L).compareTo(auth.getId()) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be obtained by an authenticated user only.");
+		}
+		
 		Company companyAccount = userService.getUser(auth.getId()).getCompany();
 		if(companyAccount == null){
 			throw new ResourceNotFoundException("Current user does not have a company account created.");
@@ -72,9 +136,6 @@ public class OfficeWebRestController {
 	}
 	
 	private List<Office> getOfficesByCompanyId(Long companyId, User auth) throws ResourceForbiddenOperationException, ResourceNotFoundException {
-		if(companyId == null || Long.valueOf(0L).compareTo(companyId) >= 0) {
-			throw new ResourceForbiddenOperationException("Offices can be obtained for only a company with valid ID");
-		}
 		
 		if(auth == null || Long.valueOf(0L).compareTo(auth.getId()) >= 0) {
 			throw new ResourceForbiddenOperationException("Offices can be obtained by an authenticated user only.");
@@ -84,6 +145,10 @@ public class OfficeWebRestController {
 	}
 	
 	private Office addCompanyAccountOffice(String officeName, User auth) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+		if(auth == null || Long.valueOf(0L).compareTo(auth.getId()) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be obtained by an authenticated user only.");
+		}
+		
 		Company companyAccount = userService.getUser(auth.getId()).getCompany();
 		if(companyAccount == null){
 			throw new ResourceNotFoundException("Current user does not have a company account created.");
@@ -93,16 +158,9 @@ public class OfficeWebRestController {
 	}
 	
 	private Office addOfficeToCompany(Long companyId, String officeName, User auth) throws ResourceForbiddenOperationException, ResourceNotFoundException {
-		if(companyId == null || Long.valueOf(0L).compareTo(companyId) >= 0) {
-			throw new ResourceForbiddenOperationException("Offices can be created for only a company with valid ID");
-		}
 		
 		if(auth == null || Long.valueOf(0L).compareTo(auth.getId()) >= 0) {
 			throw new ResourceForbiddenOperationException("Offices can be created by an authenticated user only.");
-		}
-		
-		if(officeName == null || officeName.trim().isEmpty()) {
-			throw new ResourceForbiddenOperationException("Offices without names cannot be created.");
 		}
 		
 		return officeFacade.addOffice(companyId, officeName, auth.getId());

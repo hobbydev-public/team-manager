@@ -20,6 +20,38 @@
 
 <section class="content">
     <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <div class="pull-right box-tools">
+                        <button type="button" class="btn btn-primary btn-sm" ng-click="$ctrl.openAddProjectModal()">Add</button>
+                    </div>
+                </div>
 
+                <div class="box-body">
+                    <p class="no-table-data-message" ng-if="$ctrl.projects.length == 0">
+                        There are no projects yet. Create the first one.
+                    </p>
+
+                    <table class="table table-condensed" ng-if="$ctrl.projects.length > 0">
+                        <thead>
+                            <tr>
+                                <th class="col-xs-10">Name</th>
+                                <th class="col-xs-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="project in $ctrl.projects">
+                                <td>{{project.name}}</td>
+                                <td>
+                                    <a href ng-click="$ctrl.openEditProjectModal(project.id)"><i class="fa fa-pencil"></i></a>
+                                    <a href ng-click="$ctrl.openRemoveProjectModal(project.id)"><i class="fa fa-remove"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </section>

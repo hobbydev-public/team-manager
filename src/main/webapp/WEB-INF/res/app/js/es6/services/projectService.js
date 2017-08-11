@@ -37,8 +37,10 @@ export default class ProjectService {
     addProject(name, success, fail) {
         let _service = this;
 
-        _service.res.save(
-            {name:name},
+        let newProject = new _service.res();
+        newProject.name = name;
+
+        newProject.$save(
             {},
             success,
             fail

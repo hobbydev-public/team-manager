@@ -41,7 +41,9 @@
 							<li><a href ng-click="openAddCompanyModal()"><i class="fa fa-plus"></i> <span>Add Company Account</span></a></li>
 						</c:if>
 
+						<li><a href="#!/projects"><i class="fa fa-briefcase"></i> <span>Projects</span></a></li>
 
+<!--
 						<sec:authorize access="isAuthenticated()">
 							<li class="header">ADMINISTRATION</li>
 							<li class="treeview">
@@ -103,7 +105,7 @@
 									<li><a href="#!/admin/system/mail"><i class="fa fa-circle-o"></i> Mail Server</a></li>
 								</ul>
 							</li>
-						</sec:authorize>
+						</sec:authorize> -->
 					</ul>
 				</div>
 			</aside>

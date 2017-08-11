@@ -14,4 +14,5 @@ public interface CompanyService {
 	
 	Office addOffice(Office office) throws ResourceForbiddenOperationException, ResourceNotFoundException;
 	Office updateOffice(Office office) throws ResourceForbiddenOperationException, ResourceNotFoundException;
+	boolean deleteOffice(Office office) throws ResourceNotFoundException;
 }

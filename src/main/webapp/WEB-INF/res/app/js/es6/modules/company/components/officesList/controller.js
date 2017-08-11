@@ -56,7 +56,6 @@ export default class OfficesListController {
             function (success) {
                 // on close
                 if(success) {
-                    _ctrl.location.path('/');
                     window.location.reload();
                 }
             },

@@ -1,6 +1,7 @@
 package hobbydev.teammanager.api.web;
 
 import hobbydev.teammanager.api.models.be.OfficeModel;
+import hobbydev.teammanager.api.models.be.generic.SuccessModel;
 import hobbydev.teammanager.api.models.fe.OfficeView;
 import hobbydev.teammanager.api.web.exception.HttpBadRequestException;
 import hobbydev.teammanager.business.exception.ResourceForbiddenOperationException;
@@ -104,6 +105,21 @@ public class OfficeWebRestController {
 		Office office = officeFacade.updateOffice(updatedOffice, auth.getId());
 		OfficeModel officeModel = new OfficeModel(office);
 		return new ResponseEntity<OfficeModel>(officeModel, HttpStatus.OK);
+	}
+	
+	@RequestMapping(path = "{officeId}", method = RequestMethod.DELETE)
+	public ResponseEntity<SuccessModel> deleteOffice(@PathVariable Long companyId,
+	                                                @PathVariable Long officeId,
+	                                                @CurrentUser User auth) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+		if(auth == null || Long.valueOf(0L).compareTo(auth.getId()) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be deleted by an authenticated user only.");
+		}
+		
+		boolean deleted = officeFacade.deleteOffice(officeId, companyId, auth.getId());
+		SuccessModel successModel = new SuccessModel();
+		successModel.setMessage(deleted? "Deleted": "No content");
+		
+		return new ResponseEntity<SuccessModel>(successModel, deleted? HttpStatus.OK : HttpStatus.NO_CONTENT);
 	}
 	
 	private List<Office> getCompanyAccountOffices(User auth) throws ResourceNotFoundException, ResourceForbiddenOperationException {

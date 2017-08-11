@@ -65,4 +65,25 @@ public class UserToCompanyAndOfficesAccessValidations {
 		
 		return can;
 	}
+	
+	public static boolean canUserDeleteCompanyOffice(User user, Company company, Office office) {
+		boolean can = true;
+		
+		if(!canUserViewCompany(user, company)) {
+			can = false;
+			return can;
+		}
+		
+		if(!canUserViewCompanyOffice(user, company, office)) {
+			can = false;
+			return can;
+		}
+		
+		if(!canUserEditCompanyOffice(user, company, office)) {
+			can = false;
+			return can;
+		}
+		
+		return can;
+	}
 }

@@ -2,8 +2,9 @@ package hobbydev.teammanager.business.validations;
 
 import hobbydev.teammanager.domain.accounts.Company;
 import hobbydev.teammanager.domain.accounts.User;
+import hobbydev.teammanager.domain.accounts.offices.Office;
 
-public class AccessValidations {
+public class UserToCompanyAndOfficesAccessValidations {
 	
 	public static boolean canUserViewCompany(User user, Company company) {
 		boolean can = false;
@@ -16,7 +17,18 @@ public class AccessValidations {
 		return can;
 	}
 	
-	public static boolean canUserViewCompanyOffices(User user, Company company) {
+	public static boolean canUserListCompanyOffices(User user, Company company) {
+		boolean can = true;
+		
+		if(!canUserViewCompany(user, company)) {
+			can = false;
+			return can;
+		}
+		
+		return can;
+	}
+	
+	public static boolean canUserViewCompanyOffice(User user, Company company, Office office) {
 		boolean can = true;
 		
 		if(!canUserViewCompany(user, company)) {
@@ -35,7 +47,7 @@ public class AccessValidations {
 			return can;
 		}
 		
-		if(!canUserViewCompanyOffices(user, company)) {
+		if(!canUserListCompanyOffices(user, company)) {
 			can = false;
 			return can;
 		}

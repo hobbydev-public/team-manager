@@ -62,6 +62,29 @@ public class OfficeWebRestController {
 		return new ResponseEntity<List<OfficeModel>>(officeModels, HttpStatus.OK);
 	}
 	
+	@RequestMapping(path = "{officeId}", method = RequestMethod.GET)
+	public ResponseEntity<OfficeModel> getOffice(@PathVariable  Long companyId,
+	                                             @PathVariable Long officeId,
+	                                             @CurrentUser User auth) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+		
+		if(companyId == null || Long.valueOf(0L).compareTo(companyId) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be obtained for only a company with valid ID");
+		}
+		
+		if(auth == null || Long.valueOf(0L).compareTo(auth.getId()) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be obtained by an authenticated user only.");
+		}
+		
+		if(officeId == null || Long.valueOf(0L).compareTo(officeId) >= 0) {
+			throw new ResourceForbiddenOperationException("Office can be obtained only by valid ID");
+		}
+		
+		Office domainOffice = officeFacade.getOffice(companyId, officeId, auth.getId());
+		OfficeModel officeModel = new OfficeModel(domainOffice);
+		
+		return new ResponseEntity<OfficeModel>(officeModel, HttpStatus.OK);
+	}
+	
 	private List<Office> getCompanyAccountOffices(User auth) throws ResourceNotFoundException {
 		Company companyAccount = userService.getUser(auth.getId()).getCompany();
 		if(companyAccount == null){

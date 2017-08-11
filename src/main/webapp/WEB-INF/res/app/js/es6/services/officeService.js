@@ -41,6 +41,19 @@ export default class OfficeService {
         );
     }
 
+    getOfficeById(officeId, companyId, success, fail) {
+        let _service = this;
+
+        return _service.res.get(
+            {
+                companyId: companyId,
+                officeId: officeId
+            },
+            success,
+            fail
+        );
+    }
+
     addOffice(name, success, fail) {
         let _service = this;
 

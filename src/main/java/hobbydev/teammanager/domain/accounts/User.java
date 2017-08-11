@@ -1,16 +1,18 @@
 package hobbydev.teammanager.domain.accounts;
 
-import hobbydev.teammanager.domain.core.IdentifiedEntityInterface;
+import hobbydev.teammanager.domain.projects.Project;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name="users")
-public class User /*extends Account*/ implements UserDetails, IdentifiedEntityInterface {
+public class User extends Account implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -32,6 +34,8 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 	
 	@OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Company company;
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Project> projects = new ArrayList<>();
 	
 	/*
 	@Column(name = "start_work_date")
@@ -41,8 +45,6 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 	@ManyToOne
 	@JoinColumn(name = "position_id")
 	private Position position;
-	@OneToMany(mappedBy = "userOwner", orphanRemoval = true)
-	private List<Project> projects;
 	@OneToMany(mappedBy = "userOwner", orphanRemoval = true)
 	private List<Client> clients;
 	@OneToMany(mappedBy = "user", orphanRemoval = true)
@@ -124,21 +126,29 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 		}
 	}
 	
-	/*public String getFirstName() {
-		return firstName;
+	@Override
+	public List<Project> getProjects() {
+		return projects;
 	}
 	
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	@Override
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
 	}
 	
-	public String getLastName() {
-		return lastName;
+	public void addProject(Project project) {
+		projects.add(project);
+		project.setOwner(this);
 	}
 	
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void removeProject(Project project) {
+		projects.remove(project);
+		project.setOwner(null);
 	}
+	
+	
+	
+	/*
 	
 	public Position getPosition() {
 		return position;
@@ -158,15 +168,7 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 		this.clients = clients;
 	}
 	
-	@Override
-	public List<Project> getProjects() {
-		return projects;
-	}
 	
-	@Override
-	public void setProjects(List<Project> projects) {
-		this.projects = projects;
-	}
 	
 	public List<ProjectMember> getProjectsMember() {
 		return projectsMember;
@@ -176,13 +178,6 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 		this.projectsMember = projectsMember;
 	}
 	
-	public String getRestoreKey() {
-		return restoreKey;
-	}
-	
-	public void setRestoreKey(String restoreKey) {
-		this.restoreKey = restoreKey;
-	}
 	
 	public LocalDate getStartWorkDate() {
 		return startWorkDate;
@@ -255,14 +250,12 @@ public class User /*extends Account*/ implements UserDetails, IdentifiedEntityIn
 		return isEnabled();
 	}
 	
-	/*@Override
+	@Override
 	@Transient
 	public String getName() {
-		return firstName + " " + lastName;
+		return getFirstName() + " " + getLastName();
 	}
 	
 	@Override
-	public void setName(String name) {
-		
-	}*/
+	public void setName(String name) {}
 }

@@ -72,4 +72,32 @@ public class CompanyServiceImpl extends AbstractService implements CompanyServic
 		persistant.setName(updatedOffice.getName());
 		return persistant;
 	}
+	
+	@Override
+	@Transactional
+	public boolean deleteOffice(Office office) throws ResourceNotFoundException {
+		if(office == null) {
+			throw new IllegalArgumentException("Office is null");
+		}
+		
+		if(office.getId() == null || Long.valueOf(0).compareTo(office.getId()) >= 0) {
+			throw new ResourceNotFoundException("Office ID does not exist. Office can only be deleted with valid ID.");
+		}
+		
+		if(office.getCompany() == null) {
+			throw new IllegalArgumentException("Office does not have a company");
+		}
+		
+		if(office.getCompany().getId() == null || Long.valueOf(0).compareTo(office.getCompany().getId()) >= 0) {
+			throw new ResourceNotFoundException("Company ID does not exist. Office can only be deleted with valid company ID.");
+		}
+		
+		Company persistant = getCompany(office.getCompany().getId());
+		if(!persistant.getOffices().contains(office)) {
+			return false;
+		}
+		
+		persistant.removeOffice(office);
+		return true;
+	}
 }

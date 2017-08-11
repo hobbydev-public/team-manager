@@ -12,4 +12,5 @@ public interface OfficeFacade {
 	Office getOffice(Long companyId, Long officeId, Long userId) throws ResourceNotFoundException, ResourceForbiddenOperationException;
 	Office addOffice(Long companyId, String officeName, Long userId) throws ResourceNotFoundException, ResourceForbiddenOperationException;
 	Office updateOffice(Office updatedOffice, Long userId) throws ResourceForbiddenOperationException, ResourceNotFoundException;
+	boolean deleteOffice(Long officeId, Long companyId, Long userId) throws ResourceForbiddenOperationException, ResourceNotFoundException;
 }

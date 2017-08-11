@@ -125,4 +125,29 @@ public class OfficeFacadeImpl implements OfficeFacade {
 		
 		return companyService.updateOffice(updatedOffice);
 	}
+	
+	@Override
+	public boolean deleteOffice(Long officeId, Long companyId, Long userId) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+		if(companyId == null || Long.valueOf(0L).compareTo(companyId) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be deleted from only a company with valid ID");
+		}
+		
+		if(officeId == null || Long.valueOf(0L).compareTo(officeId) >= 0) {
+			throw new ResourceForbiddenOperationException("Office can be deleted only by valid ID");
+		}
+		
+		Company company = companyService.getCompany(companyId);
+		User user = userService.getUser(userId);
+		Office office = getOffice(companyId, officeId, userId);
+		
+		if(!office.getCompany().getId().equals(company.getId())) {
+			throw new ResourceForbiddenOperationException("Office with ID=[" + officeId + "] is not found in company with ID=[" + companyId + "].");
+		}
+		
+		if(!canUserDeleteCompanyOffice(user, company, office)) {
+			throw new ResourceForbiddenOperationException("User with ID=[" + userId + "] cannot delete an office with ID=[" + office.getId() + "] of company with ID=[" + companyId + "]");
+		}
+		
+		return companyService.deleteOffice(office);
+	}
 }

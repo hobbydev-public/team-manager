@@ -1,6 +1,7 @@
 package hobbydev.teammanager.api.web;
 
 import hobbydev.teammanager.api.models.be.ProjectModel;
+import hobbydev.teammanager.api.models.fe.ProjectView;
 import hobbydev.teammanager.business.exception.ResourceForbiddenOperationException;
 import hobbydev.teammanager.business.exception.ResourceNotFoundException;
 import hobbydev.teammanager.business.facades.ProjectFacade;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,5 +42,16 @@ public class ProjectWebRestController {
 				.collect(Collectors.toList());
 		
 		return new ResponseEntity<List<ProjectModel>>(projectModels, HttpStatus.OK);
+	}
+	
+	@RequestMapping(path = "", method = RequestMethod.POST)
+	public ResponseEntity<ProjectModel> addProject(@RequestBody ProjectView view, @CurrentUser User auth) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+		if(auth == null || Long.valueOf(0L).compareTo(auth.getId()) >= 0) {
+			throw new ResourceForbiddenOperationException("Projects can be created by an authenticated user only.");
+		}
+		
+		Project domainProject = projectFacade.addProject(view.toDomain(), auth.getId());
+		
+		return new ResponseEntity<ProjectModel>(new ProjectModel(domainProject), HttpStatus.CREATED);
 	}
 }

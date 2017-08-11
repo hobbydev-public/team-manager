@@ -2,18 +2,23 @@ package hobbydev.teammanager.api.models.fe;
 
 import hobbydev.teammanager.api.models.fe.generic.View;
 import hobbydev.teammanager.domain.accounts.Company;
+import hobbydev.teammanager.domain.accounts.offices.Office;
 
-public class CompanyView implements View<Company> {
+public class OfficeView implements View<Office> {
 	
 	private Long id;
 	private String name = "";
+	private CompanyView company;
 	
 	@Override
-	public Company toDomain() {
-		Company domain = new Company();
+	public Office toDomain() {
+		Office domain = new Office();
 		
 		domain.setId(this.id);
 		domain.setName(this.name);
+		
+		Company company = this.company == null? null : this.company.toDomain();
+		domain.setCompany(company);
 		
 		return domain;
 	}
@@ -32,5 +37,13 @@ public class CompanyView implements View<Company> {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public CompanyView getCompany() {
+		return company;
+	}
+	
+	public void setCompany(CompanyView company) {
+		this.company = company;
 	}
 }

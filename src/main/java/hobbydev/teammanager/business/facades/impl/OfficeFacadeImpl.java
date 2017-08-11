@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static hobbydev.teammanager.business.validations.UserToCompanyAndOfficesAccessValidations.canUserAddCompanyOffices;
-import static hobbydev.teammanager.business.validations.UserToCompanyAndOfficesAccessValidations.canUserListCompanyOffices;
-import static hobbydev.teammanager.business.validations.UserToCompanyAndOfficesAccessValidations.canUserViewCompanyOffice;
+import static hobbydev.teammanager.business.validations.UserToCompanyAndOfficesAccessValidations.*;
 
 @Service
 public class OfficeFacadeImpl implements OfficeFacade {
@@ -28,6 +26,10 @@ public class OfficeFacadeImpl implements OfficeFacade {
 	
 	@Override
 	public List<Office> listOffices(Long companyId, Long userId) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+		if(companyId == null || Long.valueOf(0L).compareTo(companyId) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be obtained for only a company with valid ID");
+		}
+		
 		List<Office> offices = new ArrayList<>();
 		
 		Company company = companyService.getCompany(companyId);
@@ -44,6 +46,14 @@ public class OfficeFacadeImpl implements OfficeFacade {
 	
 	@Override
 	public Office getOffice(Long companyId, Long officeId, Long userId) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+		if(companyId == null || Long.valueOf(0L).compareTo(companyId) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be obtained for only a company with valid ID");
+		}
+		
+		if(officeId == null || Long.valueOf(0L).compareTo(officeId) >= 0) {
+			throw new ResourceForbiddenOperationException("Office can be obtained only by valid ID");
+		}
+		
 		Company company = companyService.getCompany(companyId);
 		User user = userService.getUser(userId);
 		
@@ -61,6 +71,14 @@ public class OfficeFacadeImpl implements OfficeFacade {
 	
 	@Override
 	public Office addOffice(Long companyId, String officeName, Long userId) throws ResourceNotFoundException, ResourceForbiddenOperationException {
+		if(companyId == null || Long.valueOf(0L).compareTo(companyId) >= 0) {
+			throw new ResourceForbiddenOperationException("Offices can be created for only a company with valid ID");
+		}
+		
+		if(officeName == null || officeName.trim().isEmpty()) {
+			throw new ResourceForbiddenOperationException("Offices without names cannot be created.");
+		}
+		
 		Company company = companyService.getCompany(companyId);
 		User user = userService.getUser(userId);
 		
@@ -73,5 +91,38 @@ public class OfficeFacadeImpl implements OfficeFacade {
 		office.setCompany(company);
 		
 		return companyService.addOffice(office);
+	}
+	
+	@Override
+	public Office updateOffice(Office updatedOffice, Long userId) throws ResourceForbiddenOperationException, ResourceNotFoundException {
+		if(updatedOffice == null) {
+			throw new IllegalArgumentException("Office is null");
+		}
+		
+		Long updatedOfficeId = updatedOffice.getId();
+		
+		if(updatedOfficeId == null || Long.valueOf(0L).compareTo(updatedOfficeId) >= 0) {
+			throw new ResourceForbiddenOperationException("Office can be updated only if it has a valid ID.");
+		}
+		
+		if(updatedOffice.getCompany() == null) {
+			throw new ResourceForbiddenOperationException("Office can be updated only for existing company.");
+		}
+		
+		Long companyId = updatedOffice.getCompany().getId();
+		
+		if(companyId == null || Long.valueOf(0L).compareTo(companyId) >= 0) {
+			throw new ResourceForbiddenOperationException("Office can be updated only for company with valid ID.");
+		}
+		
+		Company company = companyService.getCompany(companyId);
+		User user = userService.getUser(userId);
+		Office office = getOffice(company.getId(), updatedOffice.getId(), user.getId());
+		
+		if(!canUserEditCompanyOffice(user, company, office)) {
+			throw new ResourceForbiddenOperationException("User with ID=[" + userId + "] cannot edit an office with ID=[" + office.getId() + "] of company with ID=[" + companyId + "]");
+		}
+		
+		return companyService.updateOffice(updatedOffice);
 	}
 }

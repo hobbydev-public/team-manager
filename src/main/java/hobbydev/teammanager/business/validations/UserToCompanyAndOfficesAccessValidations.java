@@ -54,4 +54,15 @@ public class UserToCompanyAndOfficesAccessValidations {
 		
 		return can;
 	}
+	
+	public static boolean canUserEditCompanyOffice(User user, Company company, Office office) {
+		boolean can = true;
+		
+		if(!canUserViewCompany(user, company)) {
+			can = false;
+			return can;
+		}
+		
+		return can;
+	}
 }

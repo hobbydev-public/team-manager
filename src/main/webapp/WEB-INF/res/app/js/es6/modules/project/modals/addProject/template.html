@@ -1,0 +1,27 @@
+<header class="modal-header">
+    <button type="button" class="close" ng-click="$ctrl.dismiss()">&times;</button>
+    <h4 class="modal-title">Add Project</h4>
+</header>
+<div class="modal-body">
+
+    <div uib-alert
+         ng-repeat="alert in $ctrl.alerts" ng-class="'alert-' + (alert.type || 'info') + ' fade in'"
+         close="$ctrl.closeAlert($index)">
+        <strong>{{alert.title}}</strong>
+        <p>{{alert.message}}</p>
+    </div>
+
+    <form id="add-project-form" ng-submit="$ctrl.add()">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control"
+                   id="name" name="name" ng-model="$ctrl.name"
+                   placeholder="Name" required="required"/>
+        </div>
+    </form>
+
+</div>
+<footer class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="$ctrl.dismiss()">Cancel</button>
+    <button form="add-project-form" type="submit" class="btn btn-primary">Add</button>
+</footer>

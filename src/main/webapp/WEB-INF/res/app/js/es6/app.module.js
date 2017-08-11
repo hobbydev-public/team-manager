@@ -18,6 +18,7 @@ import services from './services';
 import dashboard from './modules/dashboard';
 import profile from './modules/profile';
 import company from './modules/company';
+import project from './modules/project';
 
 // routing
 import routesConfig from './app.module.routing';
@@ -26,7 +27,7 @@ let rootModule = angular.module('app',
 	[
 		route, 'angular-password', resource, uibootstrap, animate, //uigrid, 'ui.calendar', 'ui-iconpicker', 'ngSanitize', 'ngCsv',
 		components, modals, services,
-		dashboard, profile, company
+		dashboard, profile, company, project
 	])
 	.controller('rootCtrl', function rootCtrl($scope, $uibModal, $location, principalService) {
 

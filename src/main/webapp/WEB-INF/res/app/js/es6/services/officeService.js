@@ -29,7 +29,7 @@ export default class OfficeService {
 
     getOffices(companyId, success, fail) {
         let _service = this;
-        return _service.res.get(
+        return _service.res.query(
             {
                 companyId: companyId
             },

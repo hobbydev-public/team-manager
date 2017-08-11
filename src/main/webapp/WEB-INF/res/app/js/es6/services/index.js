@@ -8,6 +8,7 @@ import userService from './userService';
 import companyService from './companyService';
 import logService from './logService';
 import officeService from './officeService';
+import projectService from './projectService';
 
 export default angular.module('app.services',
     [
@@ -18,4 +19,5 @@ export default angular.module('app.services',
     .service('companyService', companyService)
     .service('logService', logService)
     .service('officeService', officeService)
+    .service('projectService', projectService)
     .name;
